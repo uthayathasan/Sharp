@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Sharp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sharp
 {
@@ -22,11 +24,12 @@ namespace Sharp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(options =>options.UseSqlServer(Configuration["Data:Local:ConnectionString"]));
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,DataContext context)
         {
             /*if (env.IsDevelopment())
             {
@@ -49,6 +52,7 @@ namespace Sharp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            SeedData.SeedDatabase(context);
         }
     }
 }

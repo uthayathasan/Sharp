@@ -10,9 +10,15 @@ namespace Sharp.Controllers
 {
     public class HomeController : Controller
     {
+        private DataContext Context;
+        public HomeController(DataContext ctx)
+        {
+            Context=ctx;
+        }
         public IActionResult Index()
         {
-            return View();
+            ViewBag.Message = "Sharp App";
+            return View(Context.UserStores.First());
         }
     }
 }
