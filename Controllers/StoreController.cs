@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,18 +8,19 @@ using Sharp.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Sharp.Controllers
 {
-    public class HomeController : Controller
+    
+    [Route("api/stores")]
+    public class StoreController:Controller
     {
         private DataContext Context;
-        public HomeController(DataContext ctx)
+        public StoreController(DataContext ctx)
         {
             Context=ctx;
         }
-        
-        public IActionResult Index()
+        public IEnumerable<Store> GetStores()
         {
-            ViewBag.Message = "Sharp App";
-            return View(Context.UserStores.First());
+            return Context.Stores;
         }
+
     }
 }

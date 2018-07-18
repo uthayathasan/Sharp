@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Sharp.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
 namespace Sharp
 {
     public class Startup
@@ -24,12 +24,21 @@ namespace Sharp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<IdentityDataContext>(options =>
+                options.UseSqlServer(Configuration
+                    ["Data:Identity:ConnectionString"]));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDataContext>()
+                .AddDefaultTokenProviders();
+
             services.AddDbContext<DataContext>(options =>options.UseSqlServer(Configuration["Data:Local:ConnectionString"]));
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,DataContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,DataContext context,
+        IdentityDataContext identityContext,UserManager<IdentityUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             /*if (env.IsDevelopment())
             {
@@ -39,20 +48,23 @@ namespace Sharp
             {
                 app.UseExceptionHandler("/Home/Error");
             }*/
-
+            
             app.UseDeveloperExceptionPage();
             app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
                 HotModuleReplacement = true
                 });
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute("angular-fallback",new { controller = "Home", action = "Index" });
             });
             SeedData.SeedDatabase(context);
+            IdentitySeedData.SeedDatabase(identityContext,userManager, roleManager).GetAwaiter().GetResult();
         }
     }
 }
