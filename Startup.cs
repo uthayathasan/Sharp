@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Sharp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 namespace Sharp
 {
     public class Startup
@@ -34,6 +35,20 @@ namespace Sharp
 
             services.AddDbContext<DataContext>(options =>options.UseSqlServer(Configuration["Data:Local:ConnectionString"]));
             services.AddMvc();
+
+            services.AddAuthentication(
+                    CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.Events.OnRedirectToLogin = context => {
+                        if (context.Request.Path.StartsWithSegments("/api")
+                                && context.Response.StatusCode == 200) {
+                            context.Response.StatusCode = 401;
+                        } else {
+                            context.Response.Redirect(context.RedirectUri);
+                        }
+                        return Task.FromResult<object>(null);
+                    };
+                });  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

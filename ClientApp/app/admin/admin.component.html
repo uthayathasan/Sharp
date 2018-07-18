@@ -1,10 +1,19 @@
 <div class="navbar bg-info mb-1">
-    <a class="navbar-brand text-white">Sharp Admin</a>
+    <div class="row">
+        <div class="col">
+            <a class="navbar-brand text-white">SHARP</a>
+        </div>
+        <div class="col text-right">
+            <button class="btn btn-sm btn-warning" (click)="authService.logout()">
+                Log Out
+            </button>
+        </div>
+    </div>
 </div>
 <div class="row no-gutters">
     <div class="col-3">
-        <button class="btn btn-block btn-outline-info" routerLink="/admin"
-            routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <button class="btn btn-block btn-outline-info" routerLink="/admin" 
+        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
             Overview
         </button>
         <button class="btn btn-block btn-outline-info" routerLink="/admin/stores" routerLinkActive="active">Stores</button>

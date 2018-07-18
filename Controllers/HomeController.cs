@@ -15,7 +15,7 @@ namespace Sharp.Controllers
         {
             Context=ctx;
         }
-        
+        [Authorize]
         public IActionResult Index()
         {
             ViewBag.Message = "Sharp App";

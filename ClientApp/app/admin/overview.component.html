@@ -1,0 +1,12 @@
+<table class="table m-1">
+    <tr>
+        <td>There are {{stores?.length || 0}} Stores</td>
+        <td><button class="btn btn-sm btn-info btn-block"
+            routerLink="/admin/stores">Manage Stores</button></td>
+    </tr>
+    <tr>
+        <td>There are {{userStores?.length || 0}} Users</td>
+        <td><button class="btn btn-sm btn-info btn-block"
+            routerLink="/admin/orders">Manage Users</button></td>
+    </tr>
+</table>

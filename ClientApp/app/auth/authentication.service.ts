@@ -17,7 +17,7 @@ export class AuthenticationService {
             if (response.ok) {
                 this.authenticated = true;
                 this.password = null;
-                this.router.navigateByUrl(this.callbackUrl || "");
+                this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
             }
             return this.authenticated;
         }).catch(e => {

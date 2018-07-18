@@ -5,6 +5,13 @@ import "rxjs/add/operator/map";
 import { Filter } from "./configClasses.repository";
 import { ErrorHandlerService, ValidationError } from "../errorHandler.service";
 import "rxjs/add/operator/catch"
+
+import {Store} from "./store.model";
+import {UserStore} from "./userStore.model";
+
+const storesUrl="/api/stores";
+const usersUrl="/api/users";
+
 @Injectable()
 export class Repository {
     
@@ -39,9 +46,20 @@ export class Repository {
                 throw new Error(errorResponse.toString());
             });
         }
+    public getStores(){
+        this.sendRequest(RequestMethod.Get, storesUrl)
+        .subscribe(response =>this.stores = response);   
+    }
+    public getUsers(){
+        this.sendRequest(RequestMethod.Get, usersUrl)
+        .subscribe(response =>this.userStores = response);   
+    }
+
 
     apiBusy?:boolean;
     get filter(): Filter {
         return this.filterObject;
     }
+    stores:Store[];
+    userStores:UserStore[];
 }

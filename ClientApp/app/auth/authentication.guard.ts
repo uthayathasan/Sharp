@@ -9,7 +9,7 @@ export class AuthenticationGuard {
         if (this.authService.authenticated) {
             return true;
         } else {
-        this.authService.callbackUrl = "/" + route.url.toString();
+        this.authService.callbackUrl = "/admin/" + route.url.toString();
         this.router.navigateByUrl("/login");
         return false;
         }

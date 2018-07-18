@@ -8,7 +8,7 @@ using Sharp.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Sharp.Controllers
 {
-    
+    [Authorize]
     [Route("api/stores")]
     public class StoreController:Controller
     {
