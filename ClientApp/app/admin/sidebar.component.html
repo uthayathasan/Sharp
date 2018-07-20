@@ -1,0 +1,38 @@
+<div id="sidebar"  [ngClass]="{'hide-sidebar':inter.getToggle()==1}">
+    <ul class="sidebar-menu">
+        <li class="active" style="cursor:pointer;">
+            <a class="nav-link" routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <i class="fa fa-fw fa-industry"></i>
+                <span class="nav-link-text">Stores</span>
+            </a>
+        </li>
+        <div *ngIf="inter.getStore()!=null">
+            <li class="sub-menu" style="cursor:pointer;">
+                <a class="nav-link"  routerLink="/admin/stores" routerLinkActive="active">
+                    <i class="fa fa-fw fa-dashboard"></i>
+                    <span class="nav-link-text">Dashboard</span>
+                </a>
+            </li>
+            <li class="sub-menu" style="cursor:pointer;">
+                <a class="nav-link" routerLink="/admin/stores" routerLinkActive="active">
+                    <i class="fa fa-fw fa-area-chart"></i>
+                    <span class="nav-link-text">Reports</span>
+                </a>
+                <ul class="sub">
+                    <li style="cursor:pointer;">
+                        <a>
+                            <i class="fa fa-fw fa-chart-line"></i>
+                            <span> Department Sales </span>
+                        </a>
+                    </li>
+                    <li style="cursor:pointer;">
+                        <a>
+                            <i class="fa fa-fw fa-chart-bar"></i>
+                            <span>Item Sales</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+    </ul>
+</div>

@@ -8,5 +8,7 @@ namespace Sharp.Models
 
         public DbSet<UserStore> UserStores{get;set;}
         public DbSet<Store> Stores{get;set;}
+
+        public DbSet<Authorization> Authorizations{get;set;}
     }
 }

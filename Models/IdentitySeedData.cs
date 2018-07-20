@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Sharp.Models {
 
     public static class IdentitySeedData {
-        private const string adminUser = "admin";
-        private const string adminPassword = "MySecret123$";
+        private const string adminUser ="admin";//"uthayathasan@yahoo.com";
+        private const string adminPassword ="MySecret123$";//"mg812yn" ;
         private const string adminRole = "Administrator";
 
         public static async Task SeedDatabase(IdentityDataContext context,

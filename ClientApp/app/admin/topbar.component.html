@@ -1,0 +1,15 @@
+<div class="navbar" style="background: #394a59;margin-left: -9px;margin-right: -4x;color: #37c8c4" >
+    <div class="container-fluid" style="margin-left: -9px" >
+            <a class="navbar-brand" style="font-size:20px;color:#37c8c4; font-weight:bolder;cursor: pointer;margin-left: -9px"
+             (click)="inter.clickToggle()" >
+                <i class="fa fa-fw fa-bars" style="font-size:20px;">SHARP</i>
+            </a>
+            
+            <a class="navbar-brand pull-right" style="padding-right:2px; color: #37c8c4;cursor: pointer" *ngIf="inter.getStore()!=null">
+                <i class="fa fa-fw fa-industry">{{inter.getStore()?.storeName||''}} [{{inter.getStore().postCode}}]</i>
+            </a>
+            <a class="navbar-brand pull-right" style="padding-right:2px; color: #37c8c4;cursor: pointer" (click)="authService.logout()" >
+                <i class="fa fa-fw fa-sign-out"></i>
+            </a>
+    </div>
+</div>

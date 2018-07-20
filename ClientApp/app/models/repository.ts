@@ -8,9 +8,11 @@ import "rxjs/add/operator/catch"
 
 import {Store} from "./store.model";
 import {UserStore} from "./userStore.model";
+import {Authorization} from "./authorization.model";
 
 const storesUrl="/api/stores";
 const usersUrl="/api/users";
+const authorizationUrl="/api/authorizations";
 
 @Injectable()
 export class Repository {
@@ -19,6 +21,7 @@ export class Repository {
 
     constructor(private http: Http){
         this.apiBusy=false;
+        this.getAuthorizations();
     }
     login(name: string, password: string) : Observable<Response> {
         return this.http.post("/api/account/login",{ name: name, password: password});
@@ -47,19 +50,28 @@ export class Repository {
             });
         }
     public getStores(){
-        this.sendRequest(RequestMethod.Get, storesUrl)
+        let url=storesUrl+"/"+this.logedinUser
+        this.sendRequest(RequestMethod.Get, url)
         .subscribe(response =>this.stores = response);   
     }
     public getUsers(){
         this.sendRequest(RequestMethod.Get, usersUrl)
         .subscribe(response =>this.userStores = response);   
     }
-
+    
+    public getAuthorizations(){
+        this.sendRequest(RequestMethod.Get, authorizationUrl)
+        .subscribe(response =>this.authorizations = response);   
+    }
+    
 
     apiBusy?:boolean;
     get filter(): Filter {
         return this.filterObject;
     }
-    stores:Store[];
-    userStores:UserStore[];
+    selecttedStore?:Store;
+    stores?:Store[];
+    userStores?:UserStore[];
+    authorizations?:Authorization[];
+    logedinUser?:string;
 }

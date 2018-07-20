@@ -17,10 +17,19 @@ namespace Sharp.Controllers
         {
             Context=ctx;
         }
+
+        [HttpGet]
         public IEnumerable<Store> GetStores()
         {
             return Context.Stores;
         }
 
+        [HttpGet("{id}")]
+        public IEnumerable<Store> GetStore(string id)
+        {
+            List<UserStore> userStores=Context.UserStores.Where(x=>x.UserId.Equals(id)).ToList<UserStore>();
+            return Context.Stores.Where(x=>userStores.Select(y=>y.StoreId).Contains(x.StoreId));
+        }
     }
+
 }

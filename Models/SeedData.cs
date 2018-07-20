@@ -13,7 +13,7 @@ namespace Sharp.Models
                 if(context.UserStores.Count() == 0)
                 {
                     UserStore us=new UserStore();
-                    us.UserId="uthayathasan@yahoo.com";
+                    us.UserId="admin";
                     us.StoreId="VF1";
                     us.UserRole="Admin";
                     context.UserStores.Add(us);

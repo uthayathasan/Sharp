@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,17 +8,19 @@ using Sharp.Models;
 using Microsoft.AspNetCore.Authorization;
 namespace Sharp.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    [Route("api/authorizations")]
+    public class AuthorizationController:Controller
     {
         private DataContext Context;
-        public HomeController(DataContext ctx)
+        public AuthorizationController(DataContext ctx)
         {
             Context=ctx;
         }
-        public IActionResult Index()
+        [HttpGet]
+        public IEnumerable<Authorization> GetAuthorizations()
         {
-            ViewBag.Message = "Sharp App";
-            return View(Context.UserStores.First());
+            return Context.Authorizations.Where(x=>x.Live && x.BackOffice);
         }
     }
 }

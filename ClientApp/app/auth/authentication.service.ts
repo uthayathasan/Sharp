@@ -17,7 +17,8 @@ export class AuthenticationService {
             if (response.ok) {
                 this.authenticated = true;
                 this.password = null;
-                this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
+                this.repo.logedinUser=this.name;
+                this.router.navigateByUrl(this.callbackUrl || "/admin/stores");
             }
             return this.authenticated;
         }).catch(e => {
@@ -28,6 +29,8 @@ export class AuthenticationService {
     logout() {
     this.authenticated = false;
     this.repo.logout();
+    this.repo.logedinUser=null;
+    this.repo.selecttedStore=null;
     this.router.navigateByUrl("/login");
     }
 }

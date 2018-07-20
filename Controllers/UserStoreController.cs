@@ -18,6 +18,7 @@ namespace Sharp.Controllers
              Context=ctx;
          }
 
+        [HttpGet]
         public IEnumerable<UserStore> GetUsers()
         {
             return Context.UserStores;

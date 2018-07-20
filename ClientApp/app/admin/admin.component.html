@@ -1,25 +1,17 @@
-<div class="navbar bg-info mb-1">
-    <div class="row">
-        <div class="col">
-            <a class="navbar-brand text-white">SHARP</a>
-        </div>
-        <div class="col text-right">
-            <button class="btn btn-sm btn-warning" (click)="authService.logout()">
-                Log Out
-            </button>
+<top-bar></top-bar>
+<side-bar></side-bar>
+<div id="wrapper" [ngClass]="{'hide-sidebar':inter.getToggle()==1}">
+    <div id="main">
+        <div class="container-fluid" style="margin: 0">
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>
-<div class="row no-gutters">
-    <div class="col-3">
-        <button class="btn btn-block btn-outline-info" routerLink="/admin" 
-        routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-            Overview
-        </button>
-        <button class="btn btn-block btn-outline-info" routerLink="/admin/stores" routerLinkActive="active">Stores</button>
-        <button class="btn btn-block btn-outline-info" routerLink="/admin/users"  routerLinkActive="active">Users</button>
-    </div>
-    <div class="col p-2">
-        <router-outlet></router-outlet>
+<div id="footer">
+    <div class="container-fluid">
+        <div class="text-center">
+            &copy; 2018 SHARP.
+        </div>
     </div>
 </div>
+ 
