@@ -1,35 +1,25 @@
 <div id="sidebar"  [ngClass]="{'hide-sidebar':inter.getToggle()==1}">
     <ul class="sidebar-menu">
-        <li class="active" style="cursor:pointer;">
-            <a class="nav-link" routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <i class="fa fa-fw fa-industry"></i>
+        <li [ngClass]="{'active':inter.selectedNode=='Stores'}" style="cursor:pointer;">
+            <a (click)="inter.setNode('Stores')">
+                <i class="fa fa-fw fa-building"></i>
                 <span class="nav-link-text">Stores</span>
             </a>
         </li>
         <div *ngIf="inter.getStore()!=null">
-            <li class="sub-menu" style="cursor:pointer;">
-                <a class="nav-link"  routerLink="/admin/stores" routerLinkActive="active">
-                    <i class="fa fa-fw fa-dashboard"></i>
-                    <span class="nav-link-text">Dashboard</span>
+            <li class="sub-menu" [ngClass]="{'active':inter.selectedNode==node.tag}" style="cursor:pointer" 
+                *ngFor="let node of inter.authorizationRoot">
+                <a (click)="inter.setNode(node.tag)">
+                    <i class={{node.icon}}></i>
+                    <span>{{node.name}}</span>
+                    <i class={{inter.getSelectedNodeIcon(node.tag)}} style="float:right !important;font-size:20px;padding-bottom:3px;"></i>
                 </a>
-            </li>
-            <li class="sub-menu" style="cursor:pointer;">
-                <a class="nav-link" routerLink="/admin/stores" routerLinkActive="active">
-                    <i class="fa fa-fw fa-area-chart"></i>
-                    <span class="nav-link-text">Reports</span>
-                </a>
-                <ul class="sub">
-                    <li style="cursor:pointer;">
-                        <a>
-                            <i class="fa fa-fw fa-chart-line"></i>
-                            <span> Department Sales </span>
-                        </a>
-                    </li>
-                    <li style="cursor:pointer;">
-                        <a>
-                            <i class="fa fa-fw fa-chart-bar"></i>
-                            <span>Item Sales</span>
-                        </a>
+                <ul class="sub" [ngClass]="{'hide':inter.selectedNode!=node.tag}">
+                    <li style="cursor:pointer;" *ngFor="let child of inter.getAuthorizationChild(node.tag)"  [ngClass]="{'active':inter.selectedChild==child.tag}">
+                            <a (click)="inter.setChild(child.tag)">
+                                <i class={{child.icon}}></i>
+                                <span>{{child.name}}</span>
+                            </a>
                     </li>
                 </ul>
             </li>

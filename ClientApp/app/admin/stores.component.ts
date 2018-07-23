@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
 import { Repository } from "../models/repository";
 import { Store } from "../models/store.model";
-
+import { Router } from "@angular/router";
 @Component({
     templateUrl: "stores.component.html"
     })
     export class StoresComponent {
-        constructor(private repo: Repository) {}
+        constructor(private repo: Repository,private router: Router) {}
         
         ngOnInit(){
             this.repo.getStores();
@@ -19,5 +19,6 @@ import { Store } from "../models/store.model";
         
         setStore(store:Store){
             this.repo.selecttedStore=store;
+            this.router.navigateByUrl("/admin/nodes");
         }
     }

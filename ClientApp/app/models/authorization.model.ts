@@ -13,6 +13,7 @@ export class Authorization{
         public childTag?:string,
         public lineNo?:number,
         public icon?:string,
+        public css?:string,
         public live?:boolean
     ){}
 }

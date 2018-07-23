@@ -6,7 +6,5 @@ import {Interface} from "./interface";
     templateUrl: "sidebar.component.html"
     })
     export class SidebarComponent {
-        constructor(private repo: Repository,public inter:Interface) {}
-
-        
+        constructor(private repo: Repository,public inter:Interface) {}        
     }

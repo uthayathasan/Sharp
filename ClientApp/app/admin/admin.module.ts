@@ -6,10 +6,12 @@ import { AdminComponent } from "./admin.component";
 import{StoresComponent} from "./stores.component";
 import {SidebarComponent} from "./sidebar.component";
 import {TopbarComponent} from "./topbar.component";
+import {NodesComponent} from "./nodes.component";
+import {ChildsComponent} from "./childs.component";
 import {Interface} from "./interface";
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
-declarations: [AdminComponent,StoresComponent,SidebarComponent,TopbarComponent],
+declarations: [AdminComponent,StoresComponent,SidebarComponent,TopbarComponent,NodesComponent,ChildsComponent],
 providers: [Interface]
 })
 export class AdminModule { }

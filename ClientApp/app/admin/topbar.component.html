@@ -5,8 +5,8 @@
                 <i class="fa fa-fw fa-bars" style="font-size:20px;">SHARP</i>
             </a>
             
-            <a class="navbar-brand pull-right" style="padding-right:2px; color: #37c8c4;cursor: pointer" *ngIf="inter.getStore()!=null">
-                <i class="fa fa-fw fa-industry">{{inter.getStore()?.storeName||''}} [{{inter.getStore().postCode}}]</i>
+            <a class="navbar-brand pull-right" style="padding-right:2px; color: #eee;cursor: pointer" *ngIf="inter.getStore()!=null">
+                <i class="fa fa-fw fa-building">{{inter.getStore()?.storeName||''}} [{{inter.getStore().postCode}}]</i>
             </a>
             <a class="navbar-brand pull-right" style="padding-right:2px; color: #37c8c4;cursor: pointer" (click)="authService.logout()" >
                 <i class="fa fa-fw fa-sign-out"></i>
