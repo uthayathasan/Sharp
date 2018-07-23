@@ -44,6 +44,7 @@ export class Interface{
     setNode(tag:string){
         this.selectedNode=tag;
         if(tag=='Stores') this.router.navigateByUrl("/admin/stores");
+        else if(tag=='Home') this.router.navigateByUrl("/admin/nodes");
         else this.router.navigateByUrl("/admin/childs");
     }
     setChild(tag:string){

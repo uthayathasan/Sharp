@@ -7,6 +7,12 @@
             </a>
         </li>
         <div *ngIf="inter.getStore()!=null">
+            <li class="sub-menu" [ngClass]="{'active':inter.selectedNode=='Home'}" style="cursor:pointer;">
+                <a (click)="inter.setNode('Home')">
+                    <i class="fa fa-fw fa-home"></i>
+                    <span class="nav-link-text">Home</span>
+                </a>
+            </li>
             <li class="sub-menu" [ngClass]="{'active':inter.selectedNode==node.tag}" style="cursor:pointer" 
                 *ngFor="let node of inter.authorizationRoot">
                 <a (click)="inter.setNode(node.tag)">

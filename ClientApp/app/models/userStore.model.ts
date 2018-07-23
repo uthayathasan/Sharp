@@ -3,6 +3,8 @@ export class UserStore{
         public id?:number,
         public userId?:string,
         public storeId?:string,
-        public userRole?:string
+        public userRole?:string,
+        public email?:string,
+        public phoneNumber?:string
     ){}
 }

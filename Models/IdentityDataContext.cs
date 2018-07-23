@@ -6,7 +6,7 @@ namespace Sharp.Models{
 
     public class IdentityDataContext : IdentityDbContext<IdentityUser> {
 
-        public IdentityDataContext(DbContextOptions<IdentityDataContext> options)
-            : base(options) { }
+        public IdentityDataContext(DbContextOptions<IdentityDataContext> options): base(options) { }
+
     }
 }

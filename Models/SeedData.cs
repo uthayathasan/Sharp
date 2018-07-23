@@ -13,8 +13,10 @@ namespace Sharp.Models
                 if(context.UserStores.Count() == 0)
                 {
                     context.UserStores.AddRange(
-                        new UserStore{UserId="admin",StoreId="VF1",UserRole="Admin"},
-                        new UserStore{UserId="admin",StoreId="VF2",UserRole="Admin"});
+                        new UserStore{UserId="admin",StoreId="VF1",UserRole="Admin",
+                        Email="vbrallert@visualbusinessretail.com",PhoneNumber="0044 2080901449"},
+                        new UserStore{UserId="admin",StoreId="VF2",UserRole="Admin",
+                        Email="vbrallert@visualbusinessretail.com",PhoneNumber="0044 2080901449"});
                     context.SaveChanges();
                 }
                 if(context.Stores.Count()==0)
@@ -46,8 +48,16 @@ namespace Sharp.Models
                     
                     new Authorization{Tag="Item Sales",Name="Item Sales",BackOffice=true,Admin=true,
                     Supervisor=true,Manager=true,Cashier=true,Type="Child",RootTag="Reports",ChildTag="",
-                    LineNo=20,Icon="fa fa-fw fa-chart-bar",Live=true,Css="info-box orange-bg"});
-
+                    LineNo=20,Icon="fa fa-fw fa-chart-bar",Live=true,Css="info-box orange-bg"},
+                    
+                    
+                    new Authorization{Tag="Administrator",Name="administrator",BackOffice=true,Admin=true,
+                    Supervisor=false,Manager=false,Cashier=false,Type="Root",RootTag="",ChildTag="",
+                    LineNo=200,Icon="fa fa-fw fa-angular",Live=true,Css="info-box red-bg"},
+                    
+                    new Authorization{Tag="Users",Name="Users",BackOffice=true,Admin=true,
+                    Supervisor=false,Manager=false,Cashier=false,Type="Child",RootTag="Administrator",ChildTag="",
+                    LineNo=10,Icon="fa fa-fw fa-user",Live=true,Css="info-box teal-bg"});
                     context.SaveChanges();
 
                 }

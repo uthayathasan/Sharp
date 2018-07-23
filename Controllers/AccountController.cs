@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Sharp.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Sharp.Controllers
 {
@@ -10,11 +12,31 @@ namespace Sharp.Controllers
     {
         private UserManager<IdentityUser> userManager;
         private SignInManager<IdentityUser> signInManager;
-        public AccountController(UserManager<IdentityUser> userMgr,
-        SignInManager<IdentityUser> signInMgr) 
+        private RoleManager<IdentityRole> roleManager;
+        private IdentityDataContext IdentityContext;
+         private DataContext dataContext;
+        public AccountController(IdentityDataContext identityCtx,UserManager<IdentityUser> userMgr,
+        SignInManager<IdentityUser> signInMgr,RoleManager<IdentityRole> roleMgr,DataContext dataCtx) 
         {
             userManager = userMgr;
             signInManager = signInMgr;
+            roleManager=roleMgr;
+            IdentityContext=identityCtx;
+            dataContext=dataCtx;
+        }
+        [HttpGet("api/account/users")]
+        public IEnumerable<User> GetUsers(string storeId)
+        {
+            List<User> Users=new List<User>();
+            foreach(IdentityUser iu in IdentityContext.Users)
+            {
+                User u =new User();
+                u.UserName=iu.UserName;
+                u.Email=iu.Email;
+                u.PhoneNumber=iu.PhoneNumber;
+                Users.Add(u);
+            }
+            return Users;
         }
         [HttpGet]
         public IActionResult Login(string returnUrl) 
@@ -47,6 +69,7 @@ namespace Sharp.Controllers
             }
             return BadRequest();
         }
+        
         [HttpPost]
         public async Task<IActionResult> Logout(string redirectUrl) 
         {
@@ -71,6 +94,7 @@ namespace Sharp.Controllers
             }
             return false;
         }
+
     }
     public class LoginViewModel 
     {

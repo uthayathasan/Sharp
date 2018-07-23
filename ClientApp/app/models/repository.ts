@@ -55,8 +55,11 @@ export class Repository {
         .subscribe(response =>this.stores = response);   
     }
     public getUsers(){
-        this.sendRequest(RequestMethod.Get, usersUrl)
-        .subscribe(response =>this.userStores = response);   
+        if(this.selecttedStore!=null){
+            let url=usersUrl+"?"+"storeId="+this.selecttedStore.storeId;
+            this.sendRequest(RequestMethod.Get, url)
+            .subscribe(response =>this.userStores = response);   
+        }
     }
     
     public getAuthorizations(){
