@@ -10,7 +10,6 @@ import { Router } from "@angular/router";
         
         ngOnInit(){
             this.repo.getStores();
-            this.repo.getUsers();
         }
        
         get stores(): Store[] {
