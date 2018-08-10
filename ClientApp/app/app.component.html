@@ -2,4 +2,7 @@
     <h6 *ngFor="let e of error">{{e}}</h6>
     <button class="btn btn-warning" (click)="clearError()">OK</button>
 </div>
+<div class="text-center" style=" position: absolute; left: 100px;top: 100px;z-index: 10" *ngIf="apiBusy">
+    <i class="fa fa-spinner fa-spin">Loading ...</i>
+</div>
 <router-outlet></router-outlet>

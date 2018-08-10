@@ -72,13 +72,17 @@ export class Repository {
         if (this.selecttedStore != null) {
             const url = usersUrl + '?' + 'storeId=' + this.selecttedStore.storeId;
             this.sendRequest(RequestMethod.Get, url)
-            .subscribe(response => this.userStores = response);
+            .subscribe(response => {
+                this.userStores = response;
+            });
         }
     }
 
     public getAuthorizations() {
         this.sendRequest(RequestMethod.Get, authorizationUrl)
-        .subscribe(response => this.authorizations = response);
+        .subscribe(response => {
+            this.authorizations = response;
+        });
     }
 
     public setStoreDto() {
@@ -99,9 +103,11 @@ export class Repository {
         const url = departmentUrl + '/sales';
         this.storeDto.startDate = '2018-07-01';
         this.storeDto.endDate = '2018-08-10';
+        this.apiBusy = true;
         this.sendRequest(RequestMethod.Post, url, this.storeDto).subscribe(response => {
             this.departmentsSales = response;
             console.log(this.departmentsSales);
+            this.apiBusy = false;
         });
     }
 

@@ -8,11 +8,13 @@ import {SidebarComponent} from './sidebar.component';
 import {TopbarComponent} from './topbar.component';
 import {NodesComponent} from './nodes.component';
 import {ChildsComponent} from './childs.component';
+import {DepartmentsSalesComponent} from './departmentssales.component';
 import {Interface} from './interface';
 import {TreeEvents} from './treeEvents';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
-declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent],
+declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
+     DepartmentsSalesComponent],
 providers: [Interface, TreeEvents]
 })
 export class AdminModule {}

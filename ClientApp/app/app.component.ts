@@ -25,4 +25,8 @@ export class AppComponent {
     return this.lastError;
   }
 
+  get apiBusy() {
+    return this.repo.apiBusy;
+  }
+
 }
