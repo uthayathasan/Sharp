@@ -84,7 +84,17 @@ export class Repository {
             this.authorizations = response;
         });
     }
-
+    get todayDate():string {
+        let d=new Date(Date.now());
+        let ds=d.getFullYear().toString()+"-"+(d.getMonth()+1).toString()+"-"+d.getDate().toString();
+        return ds;
+    }
+    get nextDayDate():string{
+        let d=new Date(Date.now());
+        d.setDate( d.getDate() + 1 );
+        let ds=d.getFullYear().toString()+"-"+(d.getMonth()+1).toString()+"-"+d.getDate().toString();
+        return ds;
+    }
     public setStoreDto() {
         this.storeDto.id = this.selecttedStore.id;
         this.storeDto.address = this.selecttedStore.address;
@@ -101,12 +111,15 @@ export class Repository {
     }
     public getDepartmentSales() {
         const url = departmentUrl + '/sales';
-        this.storeDto.startDate = '2018-07-01';
-        this.storeDto.endDate = '2018-08-10';
+        if(this.storeDto.startDate==null) {
+            this.storeDto.startDate =  this.todayDate;
+        }
+        if(this.storeDto.endDate==null) {
+            this.storeDto.endDate = this.nextDayDate;
+        }
         this.apiBusy = true;
         this.sendRequest(RequestMethod.Post, url, this.storeDto).subscribe(response => {
             this.departmentsSales = response;
-            console.log(this.departmentsSales);
             this.apiBusy = false;
         });
     }

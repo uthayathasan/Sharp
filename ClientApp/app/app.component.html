@@ -1,8 +1,8 @@
-<div class="bg-danger text-white text-center p-2 m-2" *ngIf="error != null">
+<div class="bg-danger text-white text-center p-2 m-2" style="position: absolute;top: 0;width: 100%;z-index: 10" *ngIf="error != null">
     <h6 *ngFor="let e of error">{{e}}</h6>
     <button class="btn btn-warning" (click)="clearError()">OK</button>
 </div>
-<div class="text-center" style=" position: absolute; left: 100px;top: 100px;z-index: 10" *ngIf="apiBusy">
+<div class="text-center" style="position: absolute; left: 100px;top: 100px;z-index: 10" *ngIf="apiBusy">
     <i class="fa fa-spinner fa-spin">Loading ...</i>
 </div>
 <router-outlet></router-outlet>

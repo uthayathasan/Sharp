@@ -5,6 +5,7 @@ import { AuthenticationGuard } from './auth/authentication.guard';
 import { AuthenticationComponent } from './auth/authentication.component';
 import {NodesComponent} from './admin/nodes.component';
 import { ChildsComponent } from './admin/childs.component';
+import {DepartmentsSalesComponent} from './admin/departmentsSales.component';
 const routes: Routes = [
     { path: 'login', component: AuthenticationComponent },
     { path: '', redirectTo: '/admin/stores', pathMatch: 'full'},
@@ -16,6 +17,7 @@ const routes: Routes = [
             { path: 'stores', component: StoresComponent },
             {path: 'nodes', component: NodesComponent},
             {path: 'childs', component: ChildsComponent},
+            {path: 'departmentsSales', component: DepartmentsSalesComponent},
             { path: '', component: StoresComponent }]}
 ];
 export const RoutingConfig = RouterModule.forRoot(routes);
