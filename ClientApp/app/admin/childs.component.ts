@@ -1,14 +1,14 @@
-import { Component } from "@angular/core";
-import {Interface} from "./interface";
-import { Router } from "@angular/router";
+import { Component } from '@angular/core';
+import {Interface} from './interface';
+import { Router } from '@angular/router';
 @Component({
-    selector: "childs-component",
-    templateUrl: "childs.component.html"
+    selector: 'app-childs',
+    templateUrl: 'childs.component.html'
     })
     export class ChildsComponent {
-        constructor(public inter:Interface,private router: Router) {
-            if(inter.getStore()==null){
-                this.router.navigateByUrl("/admin/stores");
+        constructor(public inter: Interface, private router: Router) {
+            if (inter.getStore() == null) {
+                this.router.navigateByUrl('/admin/stores');
             }
-        }        
+        }
     }

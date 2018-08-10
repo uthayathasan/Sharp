@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace Sharp.Migrations.IdentityData
+namespace Sharp.Migrations
 {
     public partial class Identity : Migration
     {

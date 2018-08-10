@@ -22,12 +22,8 @@ namespace Sharp.Models
                 if(context.Stores.Count()==0)
                 {
                     context.Stores.AddRange(
-                        new Store{StoreId="VF1",StoreName="Visual Fresh",Address="Richmond Road",
-                                City="Kingston",PostCode="KT1 5WS",PublicIp="192.168.1.100",
-                                Port=2000,DataBase="EposV3"},
-                        new Store{StoreId="VF2",StoreName="Visual Sharp",Address="Richmond Road",
-                                City="Kingston",PostCode="KT1 5WK",PublicIp="192.168.1.101",
-                                Port=2001,DataBase="EposV3"});
+                        new Store{StoreId="VF1",StoreName="Visual Fresh",Address="Richmond Road",City="Kingston",PostCode="KT1 5WS"},
+                        new Store{StoreId="VF2",StoreName="Visual Sharp",Address="Richmond Road",City="Kingston",PostCode="KT1 5WK",});
                      context.SaveChanges();
                 }
                 if(context.Authorizations.Count()==0)
@@ -53,11 +49,11 @@ namespace Sharp.Models
                     
                     new Authorization{Tag="Administrator",Name="administrator",BackOffice=true,Admin=true,
                     Supervisor=false,Manager=false,Cashier=false,Type="Root",RootTag="",ChildTag="",
-                    LineNo=200,Icon="fa fa-fw fa-angular",Live=true,Css="info-box red-bg"},
+                    LineNo=200,Icon="fa fa-fw fa-user",Live=true,Css="info-box red-bg"},
                     
                     new Authorization{Tag="Users",Name="Users",BackOffice=true,Admin=true,
                     Supervisor=false,Manager=false,Cashier=false,Type="Child",RootTag="Administrator",ChildTag="",
-                    LineNo=10,Icon="fa fa-fw fa-user",Live=true,Css="info-box teal-bg"});
+                    LineNo=10,Icon="fa fa-fw fa-users",Live=true,Css="info-box teal-bg"});
                     context.SaveChanges();
 
                 }

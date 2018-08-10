@@ -1,4 +1,4 @@
-export class Store {
+export class StoreDto {
     constructor(
         public id?: number,
         public address?: string,
@@ -11,6 +11,8 @@ export class Store {
         public storeName?: string,
         public serialNumber?: string,
         public macAddress?: string,
-        public tick?: Date
+        public tick?: Date,
+        public startDate?: string,
+        public endDate?: string
     ) {}
 }

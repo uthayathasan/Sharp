@@ -1,6 +1,6 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs/Subject";
-import { Observable } from "rxjs/Observable";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ErrorHandlerService {
     private subject = new Subject<string[]>();
@@ -11,7 +11,7 @@ export class ErrorHandlerService {
             } else if (error instanceof Error) {
                 this.subject.next([error.message]);
             } else {
-                this.subject.next(["An error has occurred"]);
+                this.subject.next(['An error has occurred']);
             }
         });
     }

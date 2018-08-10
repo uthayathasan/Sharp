@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Sharp.Models;
 using System;
 
-namespace Sharp.Migrations
+namespace Sharp.Migrations.Data
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -79,6 +79,9 @@ namespace Sharp.Migrations
                     b.Property<string>("DataBase")
                         .HasMaxLength(50);
 
+                    b.Property<string>("MacAddress")
+                        .HasMaxLength(100);
+
                     b.Property<int>("Port");
 
                     b.Property<string>("PostCode")
@@ -87,11 +90,16 @@ namespace Sharp.Migrations
                     b.Property<string>("PublicIp")
                         .HasMaxLength(50);
 
+                    b.Property<string>("SerialNumber")
+                        .HasMaxLength(100);
+
                     b.Property<string>("StoreId")
                         .HasMaxLength(50);
 
                     b.Property<string>("StoreName")
                         .HasMaxLength(100);
+
+                    b.Property<DateTime?>("Tick");
 
                     b.HasKey("Id");
 

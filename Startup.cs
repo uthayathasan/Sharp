@@ -11,6 +11,8 @@ using Sharp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Sharp.Ado;
+
 namespace Sharp
 {
     public class Startup
@@ -34,6 +36,7 @@ namespace Sharp
                 .AddDefaultTokenProviders();
 
             services.AddDbContext<DataContext>(options =>options.UseSqlServer(Configuration["Data:Local:ConnectionString"]));
+            services.AddScoped<Repository>();
             services.AddMvc();
 
             services.AddAuthentication(

@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage.Internal;
 using Sharp.Models;
 using System;
 
-namespace Sharp.Migrations.IdentityData
+namespace Sharp.Migrations
 {
     [DbContext(typeof(IdentityDataContext))]
-    [Migration("20180718104009_Identity")]
-    partial class Identity
+    partial class IdentityDataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

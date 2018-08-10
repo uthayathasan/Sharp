@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { ModelModule } from './models/model.module';
-import { AuthModule } from "./auth/auth.module";
-import { AdminModule } from "./admin/admin.module";
+import { AuthModule } from './auth/auth.module';
+import { AdminModule } from './admin/admin.module';
 
-import { ErrorHandler } from "@angular/core";
-import { ErrorHandlerService } from "./errorHandler.service";
+import { ErrorHandler } from '@angular/core';
+import { ErrorHandlerService } from './errorHandler.service';
 
-import {RoutingConfig}from "./app.routing";
+import {RoutingConfig} from './app.routing';
 
 import { AppComponent } from './app.component';
 
@@ -21,8 +21,8 @@ export function handler() {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule,FormsModule, HttpModule, ModelModule,RoutingConfig,AuthModule,AdminModule],
-  providers: [{ provide: ErrorHandlerService, useFactory: handler},{ provide: ErrorHandler, useFactory: handler}],
+  imports: [BrowserModule, FormsModule, HttpModule, ModelModule, RoutingConfig, AuthModule, AdminModule],
+  providers: [{ provide: ErrorHandlerService, useFactory: handler}, { provide: ErrorHandler, useFactory: handler}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
