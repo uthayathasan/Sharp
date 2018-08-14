@@ -15,17 +15,10 @@ import {DepartmentDto} from './departmentDto.model';
 const storesUrl = '/api/stores';
 const usersUrl = '/api/users';
 const authorizationUrl = '/api/authorizations';
-const departmentUrl = 'api/departments';
 
 @Injectable()
 export class Repository {
     private filterObject = new Filter();
-
-    constructor(private http: Http) {
-        this.apiBusy = false;
-        this.getAuthorizations();
-        this.storeDto = new StoreDto();
-    }
     apiBusy?: boolean;
     selecttedStore?: Store;
     stores?: Store[];
@@ -33,8 +26,11 @@ export class Repository {
     authorizations?: Authorization[];
     logedinUser?: string;
     storeDto?: StoreDto;
-    departmentsSales?: DepartmentDto[];
-
+    constructor(private http: Http) {
+        this.apiBusy = false;
+        this.getAuthorizations();
+        this.storeDto = new StoreDto();
+    }
     login(name: string, password: string): Observable<Response> {
         return this.http.post('/api/account/login', { name: name, password: password});
     }
@@ -84,17 +80,17 @@ export class Repository {
             this.authorizations = response;
         });
     }
-    get todayDate():string {
-        let d=new Date(Date.now());
-        let ds=d.getFullYear().toString()+"-"+(d.getMonth()+1).toString()+"-"+d.getDate().toString();
+    /*get todayDate(): string {
+        const d = new Date(Date.now());
+        const ds = d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString();
         return ds;
     }
-    get nextDayDate():string{
-        let d=new Date(Date.now());
+    get nextDayDate(): string {
+        const d = new Date(Date.now());
         d.setDate( d.getDate() + 1 );
-        let ds=d.getFullYear().toString()+"-"+(d.getMonth()+1).toString()+"-"+d.getDate().toString();
+        const ds = d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString();
         return ds;
-    }
+    }*/
     public setStoreDto() {
         this.storeDto.id = this.selecttedStore.id;
         this.storeDto.address = this.selecttedStore.address;
@@ -109,21 +105,86 @@ export class Repository {
         this.storeDto.macAddress = this.selecttedStore.macAddress;
         this.storeDto.tick = this.selecttedStore.tick;
     }
-    public getDepartmentSales() {
-        const url = departmentUrl + '/sales';
-        if(this.storeDto.startDate==null) {
-            this.storeDto.startDate =  this.todayDate;
-        }
-        if(this.storeDto.endDate==null) {
-            this.storeDto.endDate = this.nextDayDate;
-        }
-        this.apiBusy = true;
-        this.sendRequest(RequestMethod.Post, url, this.storeDto).subscribe(response => {
-            this.departmentsSales = response;
-            this.apiBusy = false;
-        });
+    get chartBackgroundColor() {
+        return [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ];
     }
-
+    get chartBorderColor() {
+        return [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ];
+    }
     get filter(): Filter {
         return this.filterObject;
     }

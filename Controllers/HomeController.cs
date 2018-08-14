@@ -18,7 +18,7 @@ namespace Sharp.Controllers
         public IActionResult Index()
         {
             ViewBag.Message = "Sharp App";
-            return View(Context.UserStores.First());
+            return View();
         }
     }
 }
