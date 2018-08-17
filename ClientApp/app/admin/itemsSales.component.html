@@ -1,7 +1,7 @@
 <div class="row">
     <div class="w-100 m-0 p-0 text-center">
         <h5 class="text-danger">
-            Department Sales
+            Product Sales
         </h5>
         <div class="col-sm-6 offset-sm-3 col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-xs-6 offset-xs-3">
             <h6 class="text-success">
@@ -19,31 +19,31 @@
                             [(ngModel)]="endDate" required />
                         </td>
                         <td>
-                            <button class="btn btn-success" [disabled]="authForm.invalid" (click)="getDepartmentSales()">GET</button>
+                            <button class="btn btn-success" [disabled]="authForm.invalid" (click)="getItemSales()">GET</button>
                         </td>
                     </tr>
                 </table>
             </form>
         </div>
-        <div *ngIf="departmentSales?.length>0" class="text-primary">
+        <div *ngIf="itemSales?.length>0" class="text-primary">
             Total Sales : {{getTotal().toFixed(2)}}
         </div>
     </div>
    
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-        <div *ngIf="departmentSales?.length>0">
+        <div *ngIf="itemSales?.length>0">
             <div class="w-100 m-0 p-0" style="overflow-y:scroll; height:400px">
                 <table class="table table-striped">
                     <thead class="m-0 p-0">
                         <tr class="m-0 p-0">
-                            <th class="m-0 p-0 pl-1">Department</th>
+                            <th class="m-0 p-0 pl-1">Product</th>
                             <th class="m-0 p-0 text-right">Amount</th>
                         </tr>
                     </thead>
                     <tbody class="m-0 p-0">
-                        <tr *ngFor="let line of departmentSales" class="m-0 p-0">
+                        <tr *ngFor="let line of itemSales" class="m-0 p-0">
                             <td class="m-0 p-0 pl-1">
-                                {{line.department}}
+                                {{line.description}}
                             </td>
                             <td class="m-0 p-0 text-right">
                                 {{line.amount.toFixed(2)}}

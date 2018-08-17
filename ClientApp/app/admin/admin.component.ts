@@ -12,4 +12,7 @@ export class AdminComponent {
     get store(): Store {
         return this.repo.selecttedStore;
     }
+    get apiBusy() {
+        return this.repo.apiBusy;
+    }
 }

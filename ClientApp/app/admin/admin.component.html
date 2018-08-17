@@ -1,3 +1,6 @@
+<div class="text-center" style="position: absolute; left: 200px;top: 100px;z-index: 10" *ngIf="apiBusy">
+    <i class="fa fa-spinner fa-spin">Loading ...</i>
+</div>
 <app-topbar></app-topbar>
 <app-sidebar></app-sidebar>
 <div id="wrapper" [ngClass]="{'hide-sidebar':inter.getToggle()==1}">

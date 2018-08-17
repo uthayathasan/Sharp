@@ -9,12 +9,15 @@ import {TopbarComponent} from './topbar.component';
 import {NodesComponent} from './nodes.component';
 import {ChildsComponent} from './childs.component';
 import {DepartmentsSalesComponent} from './departmentsSales.component';
+import {ItemsSalesComponent} from './ItemsSales.component';
 import {Interface} from './interface';
 import {TreeEvents} from './treeEvents';
+import { Report } from './report';
+import { DailySalesComponent } from './dailySales.component';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
-    DepartmentsSalesComponent],
-providers: [Interface, TreeEvents]
+    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent],
+providers: [Interface, TreeEvents, Report]
 })
 export class AdminModule {}

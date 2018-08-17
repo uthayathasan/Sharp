@@ -4,33 +4,35 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Sharp.Models;
-
 namespace Sharp.Ado
 {
-    public class DepartmentSales
+    public class ItemSales
     {
-        public List<DepartmentDto> GetDepartmentSales(StoreDto m)
+        public List<ItemDto> GetItemSales(StoreDto m)
         {
             string connectionString="Data Source="+m.PublicIp+"\\SPOSSQL_10,"+m.Port.ToString();
             connectionString +="; Initial Catalog="+m.DataBase+"; User Id=vbr; Password=mg812yn";
 
             string StartDate=m.StartDate;
             string EndDate=m.EndDate;
-            List<DepartmentDto> lm=new List<DepartmentDto>();
+
+            List<ItemDto> lm=new List<ItemDto>();
             #region SQL
-            string Sql="declare @Depart Table ";
-            Sql+="(dptno int,Amount money) ";
-            Sql+="insert into @Depart ";
-            Sql+="select dptno,sum(qty0*Price) from dbo.TranItems ";
-            Sql+="where TrnNo in( ";
-            Sql+="select TrnNo from TranHeaders ";
-            Sql+="where DateTimeEnd between @SD  and @ED) and voidd =0 ";
-            Sql+="group by dptno ";
-            Sql+="select T.dptno,D.Name,T.Amount from @Depart T left join Depts D ";
-            Sql+="on T.dptno=D.DptNo ";
-            Sql+="where T.Amount <> 0 ";
+            string Sql= "declare @Items Table ";
+            Sql +="([Description] varchar(40),dptno int,qty int, Amount money) ";
+            Sql +="insert into @Items ";
+            Sql +="select [Description],dptno,sum(qty0),sum(qty0*Price) from dbo.TranItems ";
+            Sql +="where TrnNo in( ";
+            Sql +="select TrnNo from TranHeaders ";
+            Sql +="where DateTimeEnd between @SD  and @ED) and voidd =0 ";
+            Sql +="group by dptno,[Description] ";
+
+            Sql +="select T.dptno,D.Name,T.[Description],T.qty,T.Amount from @Items T left join Depts D ";
+            Sql +="on T.dptno=D.DptNo ";
+            Sql +="where T.Amount <>0 ";
+            Sql +="order by D.Name,T.[Description] ";
             #endregion SQL
-            #region Execute SQL
+             #region Execute SQL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -55,18 +57,21 @@ namespace Sharp.Ado
                     SqlDataReader reader = command.ExecuteReader();
                     while(reader.Read())
                     {
-                        DepartmentDto d=new DepartmentDto();
+                        ItemDto d=new ItemDto();
+                        //T.dptno,D.Name,T.[Description],T.qty,T.Amount
                         #region Fill Model
-                        try{d.Id=reader.GetInt32(0);}catch{}
-                        try{d.Department=reader.GetString(1).ToUpper();}catch{}
-                        try{d.Amount=reader.GetDecimal(2);}catch{}
+                        try{d.DepartmentId=reader.GetInt32(0);}catch{}
+                        try{d.DepartmentName=reader.GetString(1).ToUpper();}catch{}
+                        try{d.Description=reader.GetString(2).ToUpper();}catch{}
+                        try{d.Quantity=reader.GetInt32(3);}catch{}
+                        try{d.Amount=reader.GetDecimal(4);}catch{}
                         #endregion Fill Model
                         lm.Add(d);
                     }
                 }
             }
             #endregion Execute SQL
-            return lm.OrderBy(x => x.Department).ToList<DepartmentDto>();
+            return lm;
         }
     }
 }

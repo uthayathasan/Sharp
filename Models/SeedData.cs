@@ -45,7 +45,10 @@ namespace Sharp.Models
                     new Authorization{Tag="Item Sales",Name="Item Sales",BackOffice=true,Admin=true,
                     Supervisor=true,Manager=true,Cashier=true,Type="Child",RootTag="Reports",ChildTag="",
                     LineNo=20,Icon="fa fa-fw fa-chart-bar",Live=true,Css="info-box orange-bg"},
-                    
+
+                    new Authorization{Tag="Daily Sales",Name="Daily Sales",BackOffice=true,Admin=true,
+                    Supervisor=true,Manager=true,Cashier=true,Type="Child",RootTag="Reports",ChildTag="",
+                    LineNo=30,Icon="fa fa-fw fa-chart-pie",Live=true,Css="info-box yellow-bg"},                    
                     
                     new Authorization{Tag="Administrator",Name="administrator",BackOffice=true,Admin=true,
                     Supervisor=false,Manager=false,Cashier=false,Type="Root",RootTag="",ChildTag="",

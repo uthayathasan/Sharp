@@ -8,6 +8,12 @@ export class TreeEvents {
         if (tag === 'Department Sales') {
             // this.repo.getDepartmentSales();
             this.router.navigateByUrl('/admin/departmentsSales');
+        } else
+        if (tag === 'Item Sales') {
+            this.router.navigateByUrl('/admin/itemsSales');
+        } else
+        if (tag === 'Daily Sales') {
+            this.router.navigateByUrl('/admin/dailySales');
         }
     }
 }

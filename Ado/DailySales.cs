@@ -4,31 +4,31 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using Sharp.Models;
-
 namespace Sharp.Ado
 {
-    public class DepartmentSales
+    public class DailySales
     {
-        public List<DepartmentDto> GetDepartmentSales(StoreDto m)
+        public List<DailySalesDto> GetDailySales(StoreDto m)
         {
             string connectionString="Data Source="+m.PublicIp+"\\SPOSSQL_10,"+m.Port.ToString();
             connectionString +="; Initial Catalog="+m.DataBase+"; User Id=vbr; Password=mg812yn";
 
             string StartDate=m.StartDate;
             string EndDate=m.EndDate;
-            List<DepartmentDto> lm=new List<DepartmentDto>();
+            List<DailySalesDto> lm=new List<DailySalesDto>();
             #region SQL
-            string Sql="declare @Depart Table ";
-            Sql+="(dptno int,Amount money) ";
-            Sql+="insert into @Depart ";
-            Sql+="select dptno,sum(qty0*Price) from dbo.TranItems ";
-            Sql+="where TrnNo in( ";
-            Sql+="select TrnNo from TranHeaders ";
-            Sql+="where DateTimeEnd between @SD  and @ED) and voidd =0 ";
-            Sql+="group by dptno ";
-            Sql+="select T.dptno,D.Name,T.Amount from @Depart T left join Depts D ";
-            Sql+="on T.dptno=D.DptNo ";
-            Sql+="where T.Amount <> 0 ";
+            string Sql = "declare @S Table ";
+            Sql +="(TrnNo bigint,Amount money,DayDate varchar(20),[DayName] varchar(50)) ";
+            Sql +="insert into @S ";
+            Sql +="select I.TrnNo,sum(I.qty0*I.price) Amount,H.Dt,DATENAME(dw,H.Dt) [DayName] from TranItems I left join ( ";
+            Sql +="select TrnNo,DateTimeEnd, CONVERT(date, DateTimeEnd) Dt from dbo.TranHeaders) as H ";
+            Sql +="on I.TrnNo=H.TrnNo ";
+            Sql +="where I.voidd=0 and DateTimeEnd between @Sd and @Ed ";
+            Sql +="group by I.TrnNo,H.Dt ";
+            Sql +="order by H.Dt ";
+            Sql +="select DayDate,[DayName],SUM(Amount) Amount from @S ";
+            Sql +="group by DayDate,[DayName] ";
+            Sql +="order by DayDate ";
             #endregion SQL
             #region Execute SQL
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -37,28 +37,29 @@ namespace Sharp.Ado
                 using (SqlCommand command = new SqlCommand(Sql, connection))
                 {
                     #region Param
-                    #region @SD
+                    #region @Sd
                     SqlParameter param  = new SqlParameter();
-                    param.ParameterName="@SD";
+                    param.ParameterName="@Sd";
                     param.Value=StartDate;
                     param.DbType=DbType.DateTime;
                     command.Parameters.Add(param);
-                    #endregion @SD
-                    #region  @ED
+                    #endregion @Sd
+                    #region  @Ed
                     param  = new SqlParameter();
-                    param.ParameterName="@ED";
+                    param.ParameterName="@Ed";
                     param.Value=EndDate;
                     param.DbType=DbType.DateTime;
                     command.Parameters.Add(param);
-                    #endregion @ED
+                    #endregion @Ed
                     #endregion Param
                     SqlDataReader reader = command.ExecuteReader();
                     while(reader.Read())
                     {
-                        DepartmentDto d=new DepartmentDto();
+                        DailySalesDto d=new DailySalesDto();
+                        // DayDate,[DayName],SUM(Amount) Amount
                         #region Fill Model
-                        try{d.Id=reader.GetInt32(0);}catch{}
-                        try{d.Department=reader.GetString(1).ToUpper();}catch{}
+                        try{d.DayDate=reader.GetString(0);}catch{}
+                        try{d.DayName=reader.GetString(1);}catch{}
                         try{d.Amount=reader.GetDecimal(2);}catch{}
                         #endregion Fill Model
                         lm.Add(d);
@@ -66,7 +67,8 @@ namespace Sharp.Ado
                 }
             }
             #endregion Execute SQL
-            return lm.OrderBy(x => x.Department).ToList<DepartmentDto>();
+            
+            return lm;
         }
     }
 }

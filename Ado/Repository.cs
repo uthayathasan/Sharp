@@ -23,5 +23,29 @@ namespace Sharp.Ado
             }
             return ob.GetDepartmentSales(m);
         }
+        public List<ItemDto> GetItemSales(StoreDto m)
+        {
+            ItemSales ob=new ItemSales();
+            List<Store> stores=Context.Stores.Where(x=>x.Id==m.Id).ToList<Store>();
+            if(stores.Count>0)
+            {
+                m.PublicIp=stores[0].PublicIp;
+                m.Port=stores[0].Port;
+                m.DataBase=stores[0].DataBase;
+            }
+            return ob.GetItemSales(m);
+        }
+        public List<DailySalesDto> GetDailySales(StoreDto m)
+        {
+            DailySales ob=new DailySales();
+            List<Store> stores=Context.Stores.Where(x=>x.Id==m.Id).ToList<Store>();
+            if(stores.Count>0)
+            {
+                m.PublicIp=stores[0].PublicIp;
+                m.Port=stores[0].Port;
+                m.DataBase=stores[0].DataBase;
+            }
+            return ob.GetDailySales(m);
+        }
     }
 }
