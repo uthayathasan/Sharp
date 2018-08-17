@@ -22,6 +22,8 @@ export class Report {
         this.departmentSalesPeriod = new Period();
         this.departmentSalesPeriod.startDate = ds;
         this.departmentSalesPeriod.endDate = de;
+        this.departmentSalesPeriod.periodName = 'Today';
+        this.departmentSalesPeriod.chart = 'Bar Chart';
         this.departmentsSales = [];
 
         this.itemSalesPeriod = new Period();
@@ -63,5 +65,85 @@ export class Report {
             day = '0' + day;
         }
         return  d.getFullYear().toString() + '-' + month + '-' + day + 'T23:59';
+    }
+
+    getStartDateByTag(tag?: string): string {
+        if (tag === 'Today') {
+            const d = new Date(Date.now());
+            return this.getStartDateTime(d);
+        } else
+        if (tag === 'Yesterday') {
+            const d = new Date(Date.now());
+            d.setDate(d.getDate() - 1);
+            return this.getStartDateTime(d);
+        } else
+        if (tag === 'This Week') {
+            const curr_date = new Date();
+            const day = curr_date.getDay();
+            const diff = curr_date.getDate() - day; // 0 for sunday
+            const week_start_tstmp = curr_date.setDate(diff);
+            const week_start = new Date(week_start_tstmp);
+            return this.getStartDateTime(week_start);
+        } else
+        if (tag === 'Last Week') {
+            const curr_date = new Date();
+            const day = curr_date.getDay();
+            const diff = curr_date.getDate() - day - 7; // 0 for sunday
+            const last_week_start_tstmp = curr_date.setDate(diff);
+            const last_week_start = new Date(last_week_start_tstmp);
+            return  this.getStartDateTime(last_week_start);
+        } else
+        if (tag === 'This Month') {
+            return '';
+        } else
+        if (tag === 'Last Month') {
+            return '';
+        } else
+        if (tag === 'This Quarter') {
+            return '';
+        } else
+        if (tag === 'Last Quarter') {
+            return '';
+        }
+    }
+    getEndDateByTag(tag?: string): string {
+        if (tag === 'Today') {
+            const d = new Date(Date.now());
+            return this.getEndDateTime(d);
+        } else
+        if (tag === 'Yesterday') {
+            const d = new Date(Date.now());
+            d.setDate(d.getDate() - 1);
+            return this.getEndDateTime(d);
+        } else
+        if (tag === 'This Week') {
+            const curr_date = new Date();
+            const day = curr_date.getDay();
+            const diff = curr_date.getDate() - day; // 0 for sunday
+            const week_start_tstmp = curr_date.setDate(diff);
+            let week_end  = new Date(week_start_tstmp);
+            week_end = new Date (week_end.setDate(week_end.getDate() + 6));
+            return this.getEndDateTime(week_end);
+        } else
+        if (tag === 'Last Week') {
+            const curr_date = new Date();
+            const day = curr_date.getDay();
+            const diff = curr_date.getDate() - day - 1; // 0 for sunday
+            const last_week_end_tstmp = curr_date.setDate(diff);
+            const last_week_end = new Date(last_week_end_tstmp);
+            return  this.getEndDateTime(last_week_end);
+        } else
+        if (tag === 'This Month') {
+            return '';
+        } else
+        if (tag === 'Last Month') {
+            return '';
+        } else
+        if (tag === 'This Quarter') {
+            return '';
+        } else
+        if (tag === 'Last Quarter') {
+            return '';
+        }
     }
 }

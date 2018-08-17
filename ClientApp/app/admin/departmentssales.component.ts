@@ -131,4 +131,23 @@ const departmentUrl = 'api/departments';
                 if ( amtDiff ) {return amtDiff; }
             });
         }
+        setPeriod(tag?: string) {
+            if (tag !== this.report.departmentSalesPeriod.periodName) {
+                this.report.departmentSalesPeriod.periodName = tag;
+                this.startDate = this.report.getStartDateByTag(tag);
+                this.endDate = this.report.getEndDateByTag(tag);
+                this.report.departmentSalesPeriod.startDate = this.startDate;
+                this.report.departmentSalesPeriod.endDate = this.endDate;
+                this.getDepartmentSales();
+            }
+        }
+        get period(): string {
+            return this.report.departmentSalesPeriod.periodName;
+        }
+        setChart(tag?: string) {
+            this.report.departmentSalesPeriod.chart = tag;
+        }
+        get chart(): string {
+            return this.report.departmentSalesPeriod.chart;
+        }
     }
