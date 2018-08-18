@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import {DepartmentDto} from '../models/departmentDto.model';
 import * as Chart from 'chart.js';
 import { RequestMethod} from '@angular/http';
+import {Period} from '../models/period.model';
+import { LocalStorage } from '@ngx-pwa/local-storage';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Operator/map';
 import { Report } from './report';
 const departmentUrl = 'api/departments';
@@ -14,25 +17,31 @@ const departmentUrl = 'api/departments';
         BarChart: any;
         startDate?: string;
         endDate?: string;
-        constructor(private repo: Repository, private report: Report, private router: Router) {
-            if (repo.selecttedStore == null) {
+        constructor(private repo: Repository, private localStorage: LocalStorage, private report: Report, private router: Router) {
+            if (!repo.selecttedStore) {
                 this.router.navigateByUrl('/admin/stores');
             } else {
                 if (!this.report.departmentSalesPeriod.initiated) {
-                    if (( this.report.departmentSalesPeriod.startDate != null) && ( this.report.departmentSalesPeriod.endDate != null )) {
-                        this.startDate = this.report.departmentSalesPeriod.startDate;
-                        this.endDate = this.report.departmentSalesPeriod.endDate;
-                        this.report.departmentSalesPeriod.initiated = true;
-                        this.getDepartmentSales();
-                    }
+                    this.getPeriod().subscribe(response => {
+                        if (response) {
+                            this.report.departmentSalesPeriod = response;
+                            this.report.departmentSalesPeriod.initiated = false;
+                        }
+                        if (( this.report.departmentSalesPeriod.startDate) && ( this.report.departmentSalesPeriod.endDate)) {
+                                this.startDate = this.report.departmentSalesPeriod.startDate;
+                                this.endDate = this.report.departmentSalesPeriod.endDate;
+                                this.report.departmentSalesPeriod.initiated = true;
+                                this.getDepartmentSales();
+                        }
+                    });
                 }
             }
         }
         ngOnInit() {
-            if (( this.report.departmentSalesPeriod.startDate != null) && ( this.report.departmentSalesPeriod.endDate != null )) {
+            if (( this.report.departmentSalesPeriod.startDate) && ( this.report.departmentSalesPeriod.endDate)) {
                 this.startDate = this.report.departmentSalesPeriod.startDate;
                 this.endDate = this.report.departmentSalesPeriod.endDate;
-                if (this.BarChart == null) {
+                if (!this.BarChart) {
                     this.getBarChart();
                 } else {
                     this.removeData(this.BarChart);
@@ -100,13 +109,14 @@ const departmentUrl = 'api/departments';
             this.repo.storeDto.startDate = this.startDate;
             this.repo.storeDto.endDate = this.endDate;
 
-            if ( this.repo.storeDto.startDate != null &&  this.repo.storeDto.endDate != null) {
+            if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
                 this.report.departmentSalesPeriod.startDate = this.startDate;
                 this.report.departmentSalesPeriod.endDate = this.endDate;
                 this.repo.apiBusy = true;
+                this.savePeriod(this.report.departmentSalesPeriod);
                 this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
                     this.report.departmentsSales = response;
-                    if (this.BarChart == null) {
+                    if (!this.BarChart) {
                         this.getBarChart();
                     } else {
                         this.removeData(this.BarChart);
@@ -118,7 +128,7 @@ const departmentUrl = 'api/departments';
             }
         }
         getTotal(): number {
-            if ((this.departmentSales != null) && (this.departmentSales.length > 0)) {
+            if ((this.departmentSales) && (this.departmentSales.length > 0)) {
                 return this.departmentSales.map(x => x.amount).reduce((s, u) => s + u + 0);
             } else {
                 return 0;
@@ -146,8 +156,15 @@ const departmentUrl = 'api/departments';
         }
         setChart(tag?: string) {
             this.report.departmentSalesPeriod.chart = tag;
+            this.savePeriod(this.report.departmentSalesPeriod);
         }
         get chart(): string {
             return this.report.departmentSalesPeriod.chart;
+        }
+        savePeriod(period: Period) {
+            this.localStorage.setItem('departmentSales', period).subscribe(() => {});
+        }
+        getPeriod(): Observable<Period> {
+            return this.localStorage.getItem<Period>('departmentSales');
         }
     }

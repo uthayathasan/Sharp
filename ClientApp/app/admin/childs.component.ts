@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     })
     export class ChildsComponent {
         constructor(public inter: Interface, private router: Router) {
-            if (inter.getStore() == null) {
+            if (!inter.getStore()) {
                 this.router.navigateByUrl('/admin/stores');
             }
         }

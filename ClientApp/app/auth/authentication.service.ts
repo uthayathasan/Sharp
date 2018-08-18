@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import 'rxjs/add/observable/of';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import {LogedIn} from '../models/logedIn.model';
+import { Store } from '../models/store.model';
 @Injectable()
 export class AuthenticationService {
     constructor(private repo: Repository, private router: Router, private localStorage: LocalStorage) {
@@ -25,7 +26,7 @@ export class AuthenticationService {
                 this.password = null;
                 this.repo.logedinUser = this.name;
                 this.router.navigateByUrl(this.callbackUrl || '/admin/stores');
-                this.storeLogedIn(this.logedIn);
+                this.saveLogedIn(this.logedIn);
             }
             return this.authenticated;
         }).catch(e => {
@@ -42,13 +43,19 @@ export class AuthenticationService {
     this.router.navigateByUrl('/login');
     location.reload();
     }
-    storeLogedIn(logedIn: LogedIn) {
+    saveLogedIn(logedIn: LogedIn) {
         this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
     }
     getLogedIn(): Observable<any> {
         return this.localStorage.getItem<LogedIn>('sharp');
     }
+    getStore(): Observable<any> {
+        return this.localStorage.getItem<Store>('store');
+    }
     clearLogedIn() {
         this.localStorage.removeItem('sharp').subscribe(() => {});
+        this.localStorage.removeItem('store').subscribe(() => {});
+        this.localStorage.removeItem('rootTag').subscribe(() => {});
+        this.localStorage.removeItem('childTag').subscribe(() => {});
     }
 }

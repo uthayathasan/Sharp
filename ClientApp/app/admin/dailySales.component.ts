@@ -15,11 +15,11 @@ export class DailySalesComponent implements OnInit {
     startDate?: string;
     endDate?: string;
     constructor(private repo: Repository, private report: Report, private router: Router) {
-        if (repo.selecttedStore == null) {
+        if (!repo.selecttedStore) {
             this.router.navigateByUrl('/admin/stores');
         } else {
             if (!this.report.dailySalesPeriod.initiated) {
-                if (( this.report.dailySalesPeriod.startDate != null) && ( this.report.dailySalesPeriod.endDate != null )) {
+                if (( this.report.dailySalesPeriod.startDate) && ( this.report.dailySalesPeriod.endDate)) {
                     this.startDate = this.report.dailySalesPeriod.startDate;
                     this.endDate = this.report.dailySalesPeriod.endDate;
                     this.report.dailySalesPeriod.initiated = true;
@@ -29,10 +29,10 @@ export class DailySalesComponent implements OnInit {
         }
     }
     ngOnInit() {
-        if (( this.report.dailySalesPeriod.startDate != null) && ( this.report.dailySalesPeriod.endDate != null )) {
+        if (( this.report.dailySalesPeriod.startDate) && ( this.report.dailySalesPeriod.endDate)) {
             this.startDate = this.report.dailySalesPeriod.startDate;
             this.endDate = this.report.dailySalesPeriod.endDate;
-            if (this.BarChart == null) {
+            if (!this.BarChart) {
                 this.getBarChart();
             } else {
                 this.removeData(this.BarChart);
@@ -99,13 +99,13 @@ export class DailySalesComponent implements OnInit {
         const url = dailySalesUrl + '/sales';
         this.repo.storeDto.startDate = this.startDate;
         this.repo.storeDto.endDate = this.endDate;
-        if ( this.repo.storeDto.startDate != null &&  this.repo.storeDto.endDate != null) {
+        if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
             this.report.dailySalesPeriod.startDate = this.startDate;
             this.report.dailySalesPeriod.endDate = this.endDate;
             this.repo.apiBusy = true;
             this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
                 this.report.dailySales = response;
-                if (this.BarChart == null) {
+                if (!this.BarChart) {
                     this.getBarChart();
                 } else {
                     this.removeData(this.BarChart);
@@ -117,7 +117,7 @@ export class DailySalesComponent implements OnInit {
         }
     }
     getTotal(): number {
-        if ((this.dailySales != null) && (this.dailySales.length > 0)) {
+        if ((this.dailySales) && (this.dailySales.length > 0)) {
             return this.dailySales.map(x => x.amount).reduce((s, u) => s + u + 0);
         } else {
             return 0;

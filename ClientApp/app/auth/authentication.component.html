@@ -1,10 +1,7 @@
-<div class="navbar" style="background: #394a59;margin-left: -9px;margin-right: -4x;color: #37c8c4" >
-        <div class="container-fluid" style="margin-left: -9px" >
-                <a class="navbar-brand" style="font-size:20px;color:#37c8c4; font-weight:bolder;cursor: pointer;margin-left: -9px">
+<div class="navbar text-light" style="background: #394a59;" >
+        <div class="container-fluid">
+                <a class="navbar-brand text-light" style="font-size:20px;font-weight:bolder;cursor: pointer">
                     SHARP
-                </a>
-                <a class="navbar-brand pull-right" style="padding-right:2px; color: #37c8c4;cursor: pointer" >
-                    <i class="fa fa-fw fa-sign-in"></i>
                 </a>
         </div>
 </div>
@@ -17,14 +14,14 @@
             <form novalidate #authForm="ngForm">
                 <div class="form-group">
                     <label>Name:</label>
-                    <input #name="ngModel" name="name" class="form-control"[(ngModel)]="authService.name" required />
+                    <input #name="ngModel" name="name" placeholder="Username" class="form-control"[(ngModel)]="authService.name" required />
                     <div *ngIf="name.invalid" class="text-danger">
                         Please enter your user name
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Password:</label>
-                    <input type="password" #password="ngModel" name="password"class="form-control" 
+                    <input type="password" #password="ngModel" name="password"  placeholder="Password" class="form-control" 
                     [(ngModel)]="authService.password" required />
                     <div *ngIf="password.invalid" class="text-danger">
                         Please enter your password

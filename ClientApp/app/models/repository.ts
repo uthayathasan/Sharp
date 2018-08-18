@@ -65,7 +65,7 @@ export class Repository {
         });
     }
     public getUsers() {
-        if (this.selecttedStore != null) {
+        if (this.selecttedStore) {
             const url = usersUrl + '?' + 'storeId=' + this.selecttedStore.storeId;
             this.sendRequest(RequestMethod.Get, url)
             .subscribe(response => {

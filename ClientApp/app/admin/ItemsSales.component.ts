@@ -17,11 +17,11 @@ const itemUrl = 'api/items';
         startDate?: string;
         endDate?: string;
         constructor(private repo: Repository, private report: Report, private router: Router) {
-            if (repo.selecttedStore == null) {
+            if (!repo.selecttedStore) {
                 this.router.navigateByUrl('/admin/stores');
             } else {
                 if (!this.report.itemSalesPeriod.initiated) {
-                    if (( this.report.itemSalesPeriod.startDate != null) && ( this.report.itemSalesPeriod.endDate != null )) {
+                    if (( this.report.itemSalesPeriod.startDate) && ( this.report.itemSalesPeriod.endDate)) {
                         this.startDate = this.report.itemSalesPeriod.startDate;
                         this.endDate = this.report.itemSalesPeriod.endDate;
                         this.report.itemSalesPeriod.initiated = true;
@@ -31,10 +31,10 @@ const itemUrl = 'api/items';
             }
         }
         ngOnInit() {
-            if (( this.report.itemSalesPeriod.startDate != null) && ( this.report.itemSalesPeriod.endDate != null )) {
+            if (( this.report.itemSalesPeriod.startDate) && ( this.report.itemSalesPeriod.endDate)) {
                 this.startDate = this.report.itemSalesPeriod.startDate;
                 this.endDate = this.report.itemSalesPeriod.endDate;
-                if (this.BarChart == null) {
+                if (!this.BarChart) {
                     this.getBarChart();
                 } else {
                     this.removeData(this.BarChart);
@@ -117,13 +117,13 @@ const itemUrl = 'api/items';
             const url = itemUrl + '/sales';
             this.repo.storeDto.startDate = this.startDate;
             this.repo.storeDto.endDate = this.endDate;
-            if ( this.repo.storeDto.startDate != null &&  this.repo.storeDto.endDate != null) {
+            if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
                 this.report.itemSalesPeriod.startDate = this.startDate;
                 this.report.itemSalesPeriod.endDate = this.endDate;
                 this.repo.apiBusy = true;
                 this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
                     this.report.itemsSales = response;
-                    if (this.BarChart == null) {
+                    if (!this.BarChart) {
                         this.getBarChart();
                     } else {
                         this.removeData(this.BarChart);
@@ -136,7 +136,7 @@ const itemUrl = 'api/items';
             }
         }
         getTotal(): number {
-            if ((this.report.itemsSales != null) && (this.report.itemsSales.length > 0)) {
+            if ((this.report.itemsSales) && (this.report.itemsSales.length > 0)) {
                 return this.report.itemsSales.map(x => x.amount).reduce((s, u) => s + u + 0);
             } else {
                 return 0;
@@ -148,7 +148,7 @@ const itemUrl = 'api/items';
                 const amtDiff =  a.departmentName.localeCompare(b.departmentName);
                 if ( amtDiff ) {return amtDiff; }
             });
-            if (this.departmentsSales == null) {
+            if (!this.departmentsSales) {
                 this.departmentsSales = [];
             }
             this.departmentsSales.length = 0;
