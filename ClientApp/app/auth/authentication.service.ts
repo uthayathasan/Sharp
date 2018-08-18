@@ -3,22 +3,29 @@ import { Repository } from '../models/repository';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/observable/of';
-
+import { LocalStorage } from '@ngx-pwa/local-storage';
+import {LogedIn} from '../models/logedIn.model';
 @Injectable()
 export class AuthenticationService {
-    constructor(private repo: Repository, private router: Router) { }
+    constructor(private repo: Repository, private router: Router, private localStorage: LocalStorage) {
+        this.logedIn = new LogedIn;
+     }
     authenticated = false;
     name: string;
     password: string;
     callbackUrl: string;
+    logedIn: LogedIn;
     login(): Observable<boolean> {
         this.authenticated = false;
         return this.repo.login(this.name, this.password).map(response => {
             if (response.ok) {
                 this.authenticated = true;
+                this.logedIn.logedinUser = this.name;
+                this.logedIn.logedinPassword = this.password;
                 this.password = null;
                 this.repo.logedinUser = this.name;
                 this.router.navigateByUrl(this.callbackUrl || '/admin/stores');
+                this.storeLogedIn(this.logedIn);
             }
             return this.authenticated;
         }).catch(e => {
@@ -29,8 +36,19 @@ export class AuthenticationService {
     logout() {
     this.authenticated = false;
     this.repo.logout();
+    this.clearLogedIn();
     this.repo.logedinUser = null;
     this.repo.selecttedStore = null;
     this.router.navigateByUrl('/login');
+    location.reload();
+    }
+    storeLogedIn(logedIn: LogedIn) {
+        this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
+    }
+    getLogedIn(): Observable<any> {
+        return this.localStorage.getItem<LogedIn>('sharp');
+    }
+    clearLogedIn() {
+        this.localStorage.removeItem('sharp').subscribe(() => {});
     }
 }

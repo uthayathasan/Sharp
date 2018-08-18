@@ -94,7 +94,9 @@ export class Report {
             return  this.getStartDateTime(last_week_start);
         } else
         if (tag === 'This Month') {
-            return '';
+            const curr_date = new Date();
+            const month_start = new Date (curr_date.getFullYear(), curr_date.getMonth(), 1);
+            return this.getStartDateTime(month_start);
         } else
         if (tag === 'Last Month') {
             return '';
@@ -134,7 +136,9 @@ export class Report {
             return  this.getEndDateTime(last_week_end);
         } else
         if (tag === 'This Month') {
-            return '';
+            const curr_date = new Date();
+            const month_end = new Date (curr_date.getFullYear(), (curr_date.getMonth() + 1), 0);
+            return this.getEndDateTime(month_end);
         } else
         if (tag === 'Last Month') {
             return '';
