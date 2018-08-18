@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
         constructor(public inter: Interface, private router: Router) {
             if (inter.getStore() == null) {
                 this.router.navigateByUrl('/admin/stores');
+            } else {
+                this.inter.setNode('Home');
             }
         }
     }
