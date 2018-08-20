@@ -40,35 +40,115 @@ export class Interface {
 
     get authorizationRoot(): Authorization[] {
         if (this.repo.userRole === 'Admin') {
-            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.admin)).sort((a, b) => {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.admin && x.backOffice)).sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if ( lineDiff ) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Supervisor') {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.supervisor && x.backOffice)).sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if ( lineDiff ) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Manager') {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.manager && x.backOffice)).sort((a, b) => {
                 const lineDiff =  a.lineNo - b.lineNo;
                 if ( lineDiff ) {return lineDiff; }
             });
         } else
         if (this.repo.userRole === 'Cashier') {
-            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.cashier)).sort((a, b) => {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.cashier && x.backOffice)).sort((a, b) => {
                 const lineDiff =  a.lineNo - b.lineNo;
                 if ( lineDiff ) {return lineDiff; }
             });
         } else {
-            return this.repo.authorizations.filter(x => x.type === 'Root').sort((a, b) => {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.backOffice)).sort((a, b) => {
                 const lineDiff =  a.lineNo - b.lineNo;
                 if ( lineDiff ) {return lineDiff; }
             });
         }
     }
     get authorizationChild() {
-        return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode).filter(x => x.type === 'Child').sort((a, b) => {
-            const lineDiff =  a.lineNo - b.lineNo;
-            if (lineDiff) {return lineDiff; }
-        });
+        if (this.repo.userRole === 'Admin') {
+            return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode)
+            .filter(x => (x.type === 'Child' && x.admin && x.backOffice ))
+            .sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if (lineDiff) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Supervisor') {
+            return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode)
+            .filter(x => (x.type === 'Child' && x.supervisor && x.backOffice ))
+            .sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if (lineDiff) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Manager') {
+            return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode)
+            .filter(x => (x.type === 'Child' && x.manager && x.backOffice ))
+            .sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if (lineDiff) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Cashier') {
+            return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode)
+            .filter(x => (x.type === 'Child' && x.cashier && x.backOffice ))
+            .sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if (lineDiff) {return lineDiff; }
+            });
+        } else {
+            return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode)
+            .filter(x => (x.type === 'Child' && x.backOffice)).sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if (lineDiff) {return lineDiff; }
+            });
+        }
     }
     getAuthorizationChild(tag: string): Authorization[] {
         if (tag === this.selectedNode) {
-        return this.repo.authorizations.filter(x => x.rootTag === tag).filter(x => x.type === 'Child').sort((a, b) => {
-            const lineDiff =  a.lineNo - b.lineNo;
-            if (lineDiff) {return lineDiff; }
-            });
+            if (this.repo.userRole === 'Admin') {
+                return this.repo.authorizations.filter(x => x.rootTag === tag)
+                .filter(x => (x.type === 'Child' && x.admin && x.backOffice ))
+                .sort((a, b) => {
+                    const lineDiff =  a.lineNo - b.lineNo;
+                    if (lineDiff) {return lineDiff; }
+                });
+            } else
+            if (this.repo.userRole === 'Supervisor') {
+                return this.repo.authorizations.filter(x => x.rootTag === tag)
+                .filter(x => (x.type === 'Child' && x.supervisor && x.backOffice ))
+                .sort((a, b) => {
+                    const lineDiff =  a.lineNo - b.lineNo;
+                    if (lineDiff) {return lineDiff; }
+                });
+            } else
+            if (this.repo.userRole === 'Manager') {
+                return this.repo.authorizations.filter(x => x.rootTag === tag)
+                .filter(x => (x.type === 'Child' && x.manager && x.backOffice ))
+                .sort((a, b) => {
+                    const lineDiff =  a.lineNo - b.lineNo;
+                    if (lineDiff) {return lineDiff; }
+                });
+            } else
+            if (this.repo.userRole === 'Cashier') {
+                return this.repo.authorizations.filter(x => x.rootTag === tag)
+                .filter(x => (x.type === 'Child' && x.cashier && x.backOffice ))
+                .sort((a, b) => {
+                    const lineDiff =  a.lineNo - b.lineNo;
+                    if (lineDiff) {return lineDiff; }
+                });
+            } else {
+                return this.repo.authorizations.filter(x => x.rootTag === tag)
+                .filter(x => (x.type === 'Child' && x.backOffice)).sort((a, b) => {
+                    const lineDiff =  a.lineNo - b.lineNo;
+                    if (lineDiff) {return lineDiff; }
+                });
+            }
         }
     }
     getSelectedNodeIcon(tag: string): string {
