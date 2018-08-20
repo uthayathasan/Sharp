@@ -6,6 +6,7 @@ import 'rxjs/add/observable/of';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import {LogedIn} from '../models/logedIn.model';
 import { Store } from '../models/store.model';
+import {Authorization} from '../models/authorization.model';
 @Injectable()
 export class AuthenticationService {
     constructor(private repo: Repository, private router: Router, private localStorage: LocalStorage) {
@@ -22,7 +23,7 @@ export class AuthenticationService {
             if (response.ok) {
                 this.authenticated = true;
                 this.logedIn.logedinUser = this.name;
-                this.logedIn.logedinPassword = this.password;
+                this.logedIn.logedinPassword = '';
                 this.password = null;
                 this.repo.logedinUser = this.name;
                 this.router.navigateByUrl(this.callbackUrl || '/admin/stores');
@@ -34,14 +35,24 @@ export class AuthenticationService {
             return Observable.of(false);
         });
     }
+    loggedIn() {
+        this.authenticated = true;
+        this.logedIn.logedinUser = this.name;
+        this.logedIn.logedinPassword = this.password;
+        this.password = null;
+        this.repo.logedinUser = this.name;
+        this.router.navigateByUrl(this.callbackUrl || '/admin/stores');
+        this.saveLogedIn(this.logedIn);
+    }
     logout() {
     this.authenticated = false;
     this.repo.logout();
-    this.clearLogedIn();
-    this.repo.logedinUser = null;
-    this.repo.selecttedStore = null;
-    this.router.navigateByUrl('/login');
-    location.reload();
+    this.localStorage.clear().subscribe(() => {
+        this.repo.logedinUser = null;
+        this.repo.selecttedStore = null;
+        this.router.navigateByUrl('/login');
+        location.reload();
+        });
     }
     saveLogedIn(logedIn: LogedIn) {
         this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
@@ -52,10 +63,10 @@ export class AuthenticationService {
     getStore(): Observable<any> {
         return this.localStorage.getItem<Store>('store');
     }
-    clearLogedIn() {
-        this.localStorage.removeItem('sharp').subscribe(() => {});
-        this.localStorage.removeItem('store').subscribe(() => {});
-        this.localStorage.removeItem('rootTag').subscribe(() => {});
-        this.localStorage.removeItem('childTag').subscribe(() => {});
+    getAuthorizations(): Observable<any> {
+        return this.localStorage.getItem<Authorization>('authorization');
+    }
+    getUserRole(): Observable<any> {
+        return this.localStorage.getItem<string>('role');
     }
 }

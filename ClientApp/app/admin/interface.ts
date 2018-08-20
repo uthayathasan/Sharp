@@ -39,10 +39,23 @@ export class Interface {
     }
 
     get authorizationRoot(): Authorization[] {
-        return this.repo.authorizations.filter(x => x.type === 'Root').sort((a, b) => {
-            const lineDiff =  a.lineNo - b.lineNo;
-            if ( lineDiff ) {return lineDiff; }
-        });
+        if (this.repo.userRole === 'Admin') {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.admin)).sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if ( lineDiff ) {return lineDiff; }
+            });
+        } else
+        if (this.repo.userRole === 'Cashier') {
+            return this.repo.authorizations.filter(x => (x.type === 'Root' && x.cashier)).sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if ( lineDiff ) {return lineDiff; }
+            });
+        } else {
+            return this.repo.authorizations.filter(x => x.type === 'Root').sort((a, b) => {
+                const lineDiff =  a.lineNo - b.lineNo;
+                if ( lineDiff ) {return lineDiff; }
+            });
+        }
     }
     get authorizationChild() {
         return this.repo.authorizations.filter(x => x.rootTag === this.selectedNode).filter(x => x.type === 'Child').sort((a, b) => {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, RequestMethod, Request, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Filter } from './configClasses.repository';
 import { ErrorHandlerService, ValidationError } from '../errorHandler.service';
 import 'rxjs/add/operator/catch';
@@ -25,9 +26,11 @@ export class Repository {
     userStores?: UserStore[];
     authorizations?: Authorization[];
     logedinUser?: string;
+    private loggedInUserRole?: string;
     storeDto?: StoreDto;
-    constructor(private http: Http) {
+    constructor(private http: Http, private localStorage: LocalStorage) {
         this.apiBusy = false;
+        this.authorizations = [];
         this.getAuthorizations();
         this.storeDto = new StoreDto();
     }
@@ -64,21 +67,15 @@ export class Repository {
             this.stores = response;
         });
     }
-    public getUsers() {
-        if (this.selecttedStore) {
-            const url = usersUrl + '?' + 'storeId=' + this.selecttedStore.storeId;
-            this.sendRequest(RequestMethod.Get, url)
-            .subscribe(response => {
-                this.userStores = response;
-            });
-        }
-    }
-
     public getAuthorizations() {
         this.sendRequest(RequestMethod.Get, authorizationUrl)
         .subscribe(response => {
             this.authorizations = response;
+            this.saveAuthorizations(this.authorizations);
         });
+    }
+    private saveAuthorizations(authorizations: Authorization[]) {
+        this.localStorage.setItem('authorization', authorizations).subscribe(() => {});
     }
     /*get todayDate(): string {
         const d = new Date(Date.now());
@@ -104,6 +101,38 @@ export class Repository {
         this.storeDto.serialNumber =  this.selecttedStore.serialNumber;
         this.storeDto.macAddress = this.selecttedStore.macAddress;
         this.storeDto.tick = this.selecttedStore.tick;
+
+        if (this.selecttedStore) {
+            const url = usersUrl + '?' + 'storeId=' + this.selecttedStore.storeId;
+            this.sendRequest(RequestMethod.Get, url)
+            .subscribe(response => {
+                this.userStores = response;
+                this.loggedInUserRole = this.userStores.filter(x => x.userId === this.logedinUser).map(y => y.userRole)[0];
+                this.saveUserRole(this.loggedInUserRole);
+                });
+            }
+    }
+    private saveUserRole(role: string) {
+        this.localStorage.setItem('role', role).subscribe(() => {});
+    }
+    get userRole(): string {
+        if (this.loggedInUserRole) {
+            return this.loggedInUserRole;
+        } else {
+            return 'Admin';
+        }
+    }
+    set userRole(value: string) {
+        this.loggedInUserRole = value;
+    }
+    public getUsers() {
+        if (this.selecttedStore) {
+            const url = usersUrl + '?' + 'storeId=' + this.selecttedStore.storeId;
+            this.sendRequest(RequestMethod.Get, url)
+            .subscribe(response => {
+                this.userStores = response;
+            });
+        }
     }
     get chartBackgroundColor() {
         return [
