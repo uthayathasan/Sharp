@@ -75,7 +75,7 @@
 <div class="row">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
         <div *ngIf="departmentSales?.length>0">
-            <div class="w-100 m-0 p-0" style="overflow-y:scroll; height:400px">
+            <div class="w-100 m-0 p-0 pr-1" style="overflow-y:scroll; height:400px">
                 <table class="table table-striped">
                     <thead class="m-0 p-0 bg-info text-white">
                         <tr class="m-0 p-0">
@@ -116,6 +116,7 @@
             Pie Chart
         </button>
         </div>
-        <canvas id="barChart" height="125px" class="chartjs-render-monitor" style="display: block;"></canvas>
+        <canvas [hidden]="!isBarchart()" id="barChart" height="125px" class="chartjs-render-monitor" style="display: block;"></canvas>
+        <canvas [hidden]="!isPieChart()" id="pieChart" height="125px" class="chartjs-render-monitor" style="display: block;"></canvas>
     </div>
 </div>

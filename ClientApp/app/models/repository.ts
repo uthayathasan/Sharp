@@ -6,6 +6,7 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Filter } from './configClasses.repository';
 import { ErrorHandlerService, ValidationError } from '../errorHandler.service';
 import 'rxjs/add/operator/catch';
+import { Router } from '@angular/router';
 
 import {Store} from './store.model';
 import {UserStore} from './userStore.model';
@@ -28,7 +29,7 @@ export class Repository {
     logedinUser?: string;
     private loggedInUserRole?: string;
     storeDto?: StoreDto;
-    constructor(private http: Http, private localStorage: LocalStorage) {
+    constructor(private http: Http, private localStorage: LocalStorage, private router: Router) {
         this.apiBusy = false;
         this.authorizations = [];
         this.getAuthorizations();
@@ -45,19 +46,26 @@ export class Repository {
             method: verb, url: url, body: data})).map(response => {
                 return response.headers.get('Content-Length') !== '0' ? response.json() : null;
             }).catch((errorResponse: Response) => {
+                if (errorResponse.toString().indexOf('Unexpected token') >= 0) {
+                    this.localStorage.clear().subscribe(() => {
+                        this.router.navigateByUrl('/login');
+                        location.reload();
+                    });
+                    throw new Error('Please Sign In');
+                }
                 if (errorResponse.status === 400 ) {
                     let jsonData: string;
                     try {
                         jsonData = errorResponse.json();
                     } catch (e) {
-                        // throw new Error("Network Error");
-                        throw new Error(errorResponse.toString());
+                        throw new Error('Network Error');
+                        // throw new Error(errorResponse.toString());
                     }
                     const messages = Object.getOwnPropertyNames(jsonData).map(p => jsonData[p]);
                     throw new ValidationError(messages);
                 }
-                // throw new Error("Network Error");
-                throw new Error(errorResponse.toString());
+                throw new Error('Network Error');
+                // throw new Error(errorResponse.toString());
             });
         }
     public getStores() {

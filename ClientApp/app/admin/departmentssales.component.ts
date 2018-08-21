@@ -15,6 +15,7 @@ const departmentUrl = 'api/departments';
     })
     export class DepartmentsSalesComponent implements OnInit {
         BarChart: any;
+        PieChart: any;
         startDate?: string;
         endDate?: string;
         constructor(private repo: Repository, private localStorage: LocalStorage, private report: Report, private router: Router) {
@@ -46,6 +47,13 @@ const departmentUrl = 'api/departments';
                 } else {
                     this.removeData(this.BarChart);
                     this.addData(this.BarChart, this.departmentSales.map(x => x.department),
+                    this.departmentSales.map(x => x.amount));
+                }
+                if (!this.PieChart) {
+                    this.getPieChart();
+                } else {
+                    this.removeData(this.PieChart);
+                    this.addData(this.PieChart, this.departmentSales.map(x => x.department),
                     this.departmentSales.map(x => x.amount));
                 }
             }
@@ -86,6 +94,27 @@ const departmentUrl = 'api/departments';
                 }
             });
         }
+        getPieChart() {
+            this.PieChart = new Chart('pieChart', {
+                type: 'pie',
+                data: {
+                    labels: this.departmentSales.map(x => x.department),
+                    datasets: [ {
+                        label: 'Sales Amount',
+                        data:  this.departmentSales.map(x => x.amount),
+                        backgroundColor: this.repo.chartBackgroundColor,
+                        borderColor: this.repo.chartBorderColor,
+                        borderWidth: 1
+                    }]
+                },
+                options : {
+                    title: {
+                        text: 'Department Sales',
+                        display: true
+                    }
+                }
+            });
+        }
         private removeData(chart) {
             chart.data.labels.length = 0;
             chart.data.datasets.forEach((dataset) => {
@@ -121,6 +150,13 @@ const departmentUrl = 'api/departments';
                     } else {
                         this.removeData(this.BarChart);
                         this.addData(this.BarChart, this.departmentSales.map(x => x.department),
+                        this.departmentSales.map(x => x.amount));
+                    }
+                    if (!this.PieChart) {
+                        this.getPieChart();
+                    } else {
+                        this.removeData(this.PieChart);
+                        this.addData(this.PieChart, this.departmentSales.map(x => x.department),
                         this.departmentSales.map(x => x.amount));
                     }
                     this.repo.apiBusy = false;
@@ -166,5 +202,19 @@ const departmentUrl = 'api/departments';
         }
         getPeriod(): Observable<Period> {
             return this.localStorage.getItem<Period>('departmentSales');
+        }
+        isBarchart() {
+            if (this.report.departmentSalesPeriod.chart === 'Bar Chart') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        isPieChart() {
+            if (this.report.departmentSalesPeriod.chart === 'Pie Chart') {
+                return true;
+            } else {
+                return false;
+            }
         }
     }

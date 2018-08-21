@@ -99,13 +99,30 @@ export class Report {
             return this.getStartDateTime(month_start);
         } else
         if (tag === 'Last Month') {
-            return '';
+            const curr_date = new Date();
+            const month_start = new Date (curr_date.getFullYear(), (curr_date.getMonth() - 1), 1);
+            return this.getStartDateTime(month_start);
         } else
         if (tag === 'This Quarter') {
-            return '';
+            const curr_date = new Date();
+            const q = [1, 2, 3, 4];
+            const curr_q = q[Math.floor((curr_date.getMonth()) / 3)];
+            const q_start = new Date (curr_date.getFullYear(), ((curr_q - 1) * 3 ) , 1);
+            return this.getStartDateTime(q_start);
         } else
         if (tag === 'Last Quarter') {
-            return '';
+            const curr_date = new Date();
+            const q = [1, 2, 3, 4];
+            let curr_q = q[Math.floor((curr_date.getMonth()) / 3)];
+            if ( curr_q === 1) {
+                curr_q = 4;
+                const q_start = new Date ((curr_date.getFullYear() - 1), ((curr_q - 1) * 3 ) , 1);
+                return this.getStartDateTime(q_start);
+            } else {
+                curr_q = curr_q - 1;
+                const q_start = new Date (curr_date.getFullYear(), ((curr_q - 1) * 3 ) , 1);
+                return this.getStartDateTime(q_start);
+            }
         }
     }
     getEndDateByTag(tag?: string): string {
@@ -141,13 +158,30 @@ export class Report {
             return this.getEndDateTime(month_end);
         } else
         if (tag === 'Last Month') {
-            return '';
+            const curr_date = new Date();
+            const month_end = new Date (curr_date.getFullYear(), (curr_date.getMonth()), 0);
+            return this.getEndDateTime(month_end);
         } else
         if (tag === 'This Quarter') {
-            return '';
+            const curr_date = new Date();
+            const q = [1, 2, 3, 4];
+            const curr_q = q[Math.floor((curr_date.getMonth()) / 3)];
+            const q_end = new Date (curr_date.getFullYear(), (curr_q) * 3 , 0);
+            return this.getEndDateTime(q_end);
         } else
         if (tag === 'Last Quarter') {
-            return '';
+            const curr_date = new Date();
+            const q = [1, 2, 3, 4];
+            let curr_q = q[Math.floor((curr_date.getMonth()) / 3)];
+            if (curr_q === 1) {
+                curr_q = 4;
+                const q_end = new Date ((curr_date.getFullYear() - 1), (curr_q) * 3 , 0);
+                return this.getEndDateTime(q_end);
+            } else {
+                curr_q = curr_q - 1;
+                const q_end = new Date (curr_date.getFullYear(), (curr_q) * 3 , 0);
+                return this.getEndDateTime(q_end);
+            }
         }
     }
 }

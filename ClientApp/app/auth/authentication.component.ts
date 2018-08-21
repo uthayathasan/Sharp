@@ -12,15 +12,14 @@ export class AuthenticationComponent implements OnInit {
                 this.authService.name = this.authService.logedIn.logedinUser;
                 this.authService.password = this.authService.logedIn.logedinPassword;
 
-                this.authService.getUserRole().subscribe(role => {
-                    if (role) {
-                        this.repo.userRole = role;
-                    }
-                });
-
                 this.authService.getAuthorizations().subscribe(authorizations => {
                     if (authorizations) {
                         this.repo.authorizations = authorizations;
+                    }
+                });
+                this.authService.getUserRole().subscribe(role => {
+                    if (role) {
+                        this.repo.userRole = role;
                     }
                 });
 
