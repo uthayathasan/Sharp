@@ -8,6 +8,7 @@ import {Period} from '../models/period.model';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Operator/map';
+import * as jsPDF from 'jspdf';
 import { Report } from './report';
 const departmentUrl = 'api/departments';
 @Component({
@@ -220,5 +221,28 @@ const departmentUrl = 'api/departments';
             } else {
                 return false;
             }
+        }
+        exportToPdf() {
+            const data = this.departmentSales;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            doc.setFont('Open Sans', 'san-serif');
+            doc.setFontSize(14);
+            doc.setFontType('bold');
+            doc.cellInitialize();
+            doc.cell(10, 10, 40, 25, 'Id', 0, 'right');
+            doc.cell(50, 10, 200, 25, 'Department', 0, 'left');
+            doc.cell(250, 10, 100, 25, 'Amount', 0, 'right');
+            doc.setFontSize(12);
+            doc.setFontType('normal');
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+                // doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, index);
+                doc.cell(10, 10, 40, 25, element.id.toString(), (index + 1), 'right');
+                doc.cell(50, 10, 200, 25, element.department, (index + 1), 'left');
+                doc.cell(250, 10, 100, 25, element.amount.toFixed(2), (index + 1), 'right');
+            }
+            doc.save('DepartmentSales.pdf');
+            // doc.autoPrint();
+            // window.open(doc.output('bloburl'), '_blank');
         }
     }
