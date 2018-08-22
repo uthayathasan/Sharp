@@ -156,6 +156,7 @@ export class Interface {
     }
     setNode(tag: string) {
         if (tag) {
+            this.selectedChild = '';
             this.localStorage.removeItem('childTag').subscribe(() => {});
             this.saveRootTag(tag);
             this.selectedNode = tag;

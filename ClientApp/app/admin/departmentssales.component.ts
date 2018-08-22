@@ -180,11 +180,15 @@ const departmentUrl = 'api/departments';
         setPeriod(tag?: string) {
             if (tag !== this.report.departmentSalesPeriod.periodName) {
                 this.report.departmentSalesPeriod.periodName = tag;
-                this.startDate = this.report.getStartDateByTag(tag);
-                this.endDate = this.report.getEndDateByTag(tag);
+                if (tag !== '') {
+                    this.startDate = this.report.getStartDateByTag(tag);
+                    this.endDate = this.report.getEndDateByTag(tag);
+                }
                 this.report.departmentSalesPeriod.startDate = this.startDate;
                 this.report.departmentSalesPeriod.endDate = this.endDate;
-                this.getDepartmentSales();
+                if (tag !== '') {
+                    this.getDepartmentSales();
+                }
             }
         }
         get period(): string {

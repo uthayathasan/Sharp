@@ -3,9 +3,12 @@
 </div>
 <app-topbar></app-topbar>
 <app-sidebar></app-sidebar>
+<div id="breadcrumb" [ngClass]="{'hide-sidebar':inter.getToggle()==1}">
+    <app-breadcrumb></app-breadcrumb>
+</div>
 <div id="wrapper" [ngClass]="{'hide-sidebar':inter.getToggle()==1}">
     <div id="main">
-        <div class="container-fluid my-2">
+        <div class="container-fluid" style="margin: 0;margin-top: 18px">
             <router-outlet></router-outlet>
         </div>
     </div>

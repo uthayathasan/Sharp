@@ -16,19 +16,18 @@ export class AuthenticationComponent implements OnInit {
                     if (authorizations) {
                         this.repo.authorizations = authorizations;
                     }
-                });
-                this.authService.getUserRole().subscribe(role => {
-                    if (role) {
-                        this.repo.userRole = role;
-                    }
-                });
-
-                this.authService.getStore().subscribe(result => {
-                    if (result) {
-                        this.repo.selecttedStore = result;
-                        this.repo.setStoreDto();
-                    }
-                    this.authService.loggedIn();
+                    this.authService.getUserRole().subscribe(role => {
+                        if (role) {
+                            this.repo.userRole = role;
+                        }
+                        this.authService.getStore().subscribe(result => {
+                            if (result) {
+                                this.repo.selecttedStore = result;
+                                this.repo.setStoreDto();
+                            }
+                            this.authService.loggedIn();
+                        });
+                    });
                 });
             }
         });

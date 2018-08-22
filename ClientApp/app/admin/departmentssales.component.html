@@ -3,80 +3,82 @@
         <h5 class="text-danger">
             Department Sales
         </h5>
-        <div *ngIf="departmentSales?.length>0" class="text-primary">
-                Total Sales : {{getTotal().toFixed(2)}}
+    </div>
+</div>
+<div class="row my-1">
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+        <form novalidate #authForm="ngForm">
+            <table table-xs border="0">
+                <tr>
+                    <th class="text-success">
+                        Enter Date Period
+                    </th>
+                    <td (click)="setPeriod('')">
+                        <input #name="ngModel" name="startDate" type="datetime-local" class="form-control form-control-sm form-control-xs" style="max-width: 250px;"
+                        [(ngModel)]="startDate" required />
+                    </td>
+                    <td (click)="setPeriod('')">
+                        <input #name="ngModel" name="endDate" type="datetime-local" class="form-control form-control-sm form-control-xs" style="max-width: 250px;"
+                        [(ngModel)]="endDate" required />
+                    </td>
+                    <td>
+                        <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getDepartmentSales()">GET</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>    
+</div>
+<div class="row my-1">
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+        <div class="pull-right">
+            <div class="btn-group btn-group-justified">
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Today'}"
+                    (click)="setPeriod('Today')">
+                    Today
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Yesterday'}"
+                    (click)="setPeriod('Yesterday')">
+                    Yesterday
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Week'}"
+                    (click)="setPeriod('This Week')">
+                    This Week
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Week'}"
+                    (click)="setPeriod('Last Week')">
+                    Last Week
+                </button>
+            </div>
+            <div class="btn-group btn-group-justified">
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Month'}"
+                    (click)="setPeriod('This Month')">
+                    This Month
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Month'}"
+                    (click)="setPeriod('Last Month')">
+                    Last Month
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Quarter'}"
+                    (click)="setPeriod('This Quarter')">
+                    This Quarter
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Quarter'}"
+                    (click)="setPeriod('Last Quarter')">
+                    Last Quarter
+                </button>
+            </div>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
-        <div class="btn-group btn-group-justified">
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Today'}"
-                (click)="setPeriod('Today')">
-                Today
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Yesterday'}"
-                (click)="setPeriod('Yesterday')">
-                Yesterday
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Week'}"
-                (click)="setPeriod('This Week')">
-                This Week
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Week'}"
-                (click)="setPeriod('Last Week')">
-                Last Week
-            </button>
-        </div>
-        <div class="btn-group btn-group-justified">
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Month'}"
-                (click)="setPeriod('This Month')">
-                This Month
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Month'}"
-                (click)="setPeriod('Last Month')">
-                Last Month
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='This Quarter'}"
-                (click)="setPeriod('This Quarter')">
-                This Quarter
-            </button>
-            <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Last Quarter'}"
-                (click)="setPeriod('Last Quarter')">
-                Last Quarter
-            </button>
-        </div>
-    </div>
-    <div class="col-sm-6 col-lg-6 col-md-6 col-xs-12">
-        <div class="w-100 m-0 p-0 text-center">
-            <h6 class="text-success">
-                Enter Date Period
-            </h6>
-            <form novalidate #authForm="ngForm">
-                <table border="0">
-                    <tr>
-                        <td (click)="setPeriod('')">
-                            <input #name="ngModel" name="startDate" type="datetime-local" class="form-control" style="max-width: 250px;"
-                            [(ngModel)]="startDate" required />
-                        </td>
-                        <td (click)="setPeriod('')">
-                            <input #name="ngModel" name="endDate" type="datetime-local" class="form-control" style="max-width: 250px;"
-                            [(ngModel)]="endDate" required />
-                        </td>
-                        <td>
-                            <button class="btn btn-success" [disabled]="authForm.invalid" (click)="getDepartmentSales()">GET</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
         <div *ngIf="departmentSales?.length>0">
+            <div class="text-danger">
+                Total Sales : {{getTotal().toFixed(2)}}
+            </div>
             <div class="w-100 m-0 p-0 pr-1" style="overflow-y:scroll; height:400px">
-                <table class="table table-striped">
+                <table class="table table-xs table-striped">
                     <thead class="m-0 p-0 bg-info text-white">
                         <tr class="m-0 p-0">
                             <th class="m-0 p-0 pl-1">Department</th>
@@ -105,18 +107,20 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-success" [ngClass]="{'active':chart=='Bar Chart'}"
-            (click)="setChart('Bar Chart')">
-            Bar Chart
-        </button>
-        <button type="button" class="btn btn-sm btn-success" [ngClass]="{'active':chart=='Pie Chart'}"
-            (click)="setChart('Pie Chart')">
-            Pie Chart
-        </button>
+                (click)="setChart('Bar Chart')">
+                Bar Chart
+            </button>
+            <button type="button" class="btn btn-sm btn-success" [ngClass]="{'active':chart=='Pie Chart'}"
+                (click)="setChart('Pie Chart')">
+                Pie Chart
+            </button>
         </div>
-        <canvas [hidden]="!isBarchart()" id="barChart" height="125px" class="chartjs-render-monitor" style="display: block;"></canvas>
-        <canvas [hidden]="!isPieChart()" id="pieChart" height="125px" class="chartjs-render-monitor" style="display: block;"></canvas>
+        <div  class="chart-container" style="position: relative; height:400px; width:100%">
+            <canvas [hidden]="!isBarchart()" id="barChart"  class="chartjs-render-monitor" style="display: block;"></canvas>
+            <canvas [hidden]="!isPieChart()" id="pieChart"  class="chartjs-render-monitor" style="display: block;"></canvas>
+        </div>
     </div>
 </div>

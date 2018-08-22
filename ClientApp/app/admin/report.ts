@@ -29,19 +29,33 @@ export class Report {
         this.itemSalesPeriod = new Period();
         this.itemSalesPeriod.startDate = ds;
         this.itemSalesPeriod.endDate = de;
+        this.itemSalesPeriod.periodName = 'Today';
+        this.itemSalesPeriod.chart = 'Bar Chart';
         this.itemsSales = [];
 
         const dd = new Date(Date.now());
-        dd.setDate(dd.getDate() - 7);
+        dd.setDate(dd.getDate() - 10);
         const dds = this.getStartDateTime(dd);
 
-        dd.setDate(dd.getDate() + 6);
+        dd.setDate(dd.getDate() + 9);
         const dde = this.getEndDateTime(dd);
 
         this.dailySalesPeriod = new Period();
         this.dailySalesPeriod.startDate = dds;
         this.dailySalesPeriod.endDate = dde;
+        this.dailySalesPeriod.periodName = 'Last 10 Days';
+        this.dailySalesPeriod.chart = 'Bar Chart';
         this.dailySales = [];
+    }
+    public reset() {
+        this.departmentsSales.length = 0;
+        this.departmentSalesPeriod.initiated = false;
+
+        this.itemsSales.length = 0;
+        this.itemSalesPeriod.initiated = false;
+
+        this.dailySales.length = 0;
+        this.dailySalesPeriod.initiated = false;
     }
 
     private getStartDateTime(d?: Date): string {
@@ -123,6 +137,11 @@ export class Report {
                 const q_start = new Date (curr_date.getFullYear(), ((curr_q - 1) * 3 ) , 1);
                 return this.getStartDateTime(q_start);
             }
+        } else
+        if (tag === 'Last 10 Days') {
+            const dd = new Date(Date.now());
+            dd.setDate(dd.getDate() - 10);
+            return this.getStartDateTime(dd);
         }
     }
     getEndDateByTag(tag?: string): string {
@@ -182,6 +201,12 @@ export class Report {
                 const q_end = new Date (curr_date.getFullYear(), (curr_q) * 3 , 0);
                 return this.getEndDateTime(q_end);
             }
+        } else
+        if (tag === 'Last 10 Days') {
+            const dd = new Date(Date.now());
+            dd.setDate(dd.getDate() - 10);
+            dd.setDate(dd.getDate() + 9);
+            return this.getEndDateTime(dd);
         }
     }
 }

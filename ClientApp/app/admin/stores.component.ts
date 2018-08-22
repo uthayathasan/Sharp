@@ -4,11 +4,13 @@ import { Store } from '../models/store.model';
 import { Router } from '@angular/router';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Interface } from './interface';
+import { Report } from './report';
 @Component({
     templateUrl: 'stores.component.html'
     })
     export class StoresComponent implements OnInit {
-        constructor(private repo: Repository, private inter: Interface, private router: Router, private localStorage: LocalStorage) {}
+        constructor(private repo: Repository, private report: Report, private inter: Interface,
+             private router: Router, private localStorage: LocalStorage) {}
         ngOnInit() {
             this.inter.setNode('Stores');
             this.repo.getStores();
@@ -17,6 +19,9 @@ import { Interface } from './interface';
             return this.repo.stores;
         }
         setStore(store: Store) {
+            if (this.repo.selecttedStore !== store) {
+                this.report.reset();
+            }
             this.repo.selecttedStore = store;
             this.repo.setStoreDto();
             this.saveStore(store);
