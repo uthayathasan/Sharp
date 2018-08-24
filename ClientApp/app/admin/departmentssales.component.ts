@@ -9,6 +9,7 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Operator/map';
 import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Report } from './report';
 const departmentUrl = 'api/departments';
 @Component({
@@ -73,6 +74,7 @@ const departmentUrl = 'api/departments';
                     }]
                 },
                 options : {
+                    maintainAspectRatio: false,
                     title: {
                         text: 'Department Sales',
                         display: true
@@ -109,6 +111,7 @@ const departmentUrl = 'api/departments';
                     }]
                 },
                 options : {
+                    maintainAspectRatio: false,
                     title: {
                         text: 'Department Sales',
                         display: true
@@ -223,25 +226,98 @@ const departmentUrl = 'api/departments';
             }
         }
         exportToPdf() {
+            const store = this.repo.selecttedStore;
             const data = this.departmentSales;
             const doc = new jsPDF('p', 'pt', 'a4');
             doc.setFont('Open Sans', 'san-serif');
-            doc.setFontSize(14);
-            doc.setFontType('bold');
-            doc.cellInitialize();
-            doc.cell(10, 10, 40, 25, 'Id', 0, 'right');
-            doc.cell(50, 10, 200, 25, 'Department', 0, 'left');
-            doc.cell(250, 10, 100, 25, 'Amount', 0, 'right');
-            doc.setFontSize(12);
-            doc.setFontType('normal');
+            const leftMargin = 40;
+            const topMargin = 140;
+            const rowHeight = 20;
+            const cell1Width = 40;
+            const cell2Width = 200;
+            const cell3Width = 100;
+            const leftMargin2 = leftMargin +  cell1Width;
+            const leftMargin3 = leftMargin2 + cell2Width;
+            let currPage = 1;
+            let pageNumber = 1;
+            let k = 0;
             for (let index = 0; index < data.length; index++) {
+                if ( k === 0) {
+                    doc.cellInitialize();
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.setDrawColor(224, 224, 224);
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Id', k, 'right');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
+                    doc.setFontSize(12);
+                    doc.setFontType('normal');
+                    k = k + 1;
+                }
+                if (currPage <  pageNumber) {
+                    currPage =  pageNumber;
+                    doc.addPage();
+                    doc.cellInitialize();
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.setDrawColor(224, 224, 224);
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Id', k, 'right');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
+                    doc.setFontSize(12);
+                    doc.setFontType('normal');
+                    k = k + 1;
+                }
+                // endregion table header
                 const element = data[index];
-                // doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, index);
-                doc.cell(10, 10, 40, 25, element.id.toString(), (index + 1), 'right');
-                doc.cell(50, 10, 200, 25, element.department, (index + 1), 'left');
-                doc.cell(250, 10, 100, 25, element.amount.toFixed(2), (index + 1), 'right');
+                doc.setDrawColor(224, 224, 224);
+                doc.cell(leftMargin, topMargin, cell1Width, rowHeight, element.id.toString(), k, 'right');
+                doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, element.department, k, 'left');
+                doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, element.amount.toFixed(2), k, 'right');
+                k = k + 1;
+                pageNumber = Math.floor(k / 30) + 1;
             }
-            doc.save('DepartmentSales.pdf');
+            const ele = document.getElementById('chartToPdf');
+            html2canvas(ele).then(canvas => {
+                // Few necessary setting options
+                const imgWidth = 500;
+                const pageHeight = 800;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                const heightLeft = imgHeight;
+                const contentDataURL = canvas.toDataURL('image/png');
+
+                doc.addPage();
+                doc.addImage(contentDataURL, 'PNG', 40, 140, imgWidth, imgHeight);
+                // region Page header and footer
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 0; i < pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(12);
+                    doc.text(570, 820, doc.internal.getCurrentPageInfo().pageNumber + '/' + pageCount);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.text(store.storeName, 40, 40);
+                    doc.text(store.address, 40, 60);
+                    doc.text(store.city, 40, 80);
+                    doc.text(store.postCode, 40, 100);
+
+                    doc.text('Department Sales', 420, 40);
+                    doc.text('From: ', 420, 60);
+                    const start = new Date(this.report.departmentSalesPeriod.startDate);
+                    doc.text(this.report.getDateUkformat(start), 460, 60);
+                    doc.text('To  : ', 420, 80);
+                    const end = new Date(this.report.departmentSalesPeriod.endDate);
+                    doc.text(this.report.getDateUkformat(end), 460, 80);
+                    doc.text('User: ', 420, 100);
+                    doc.text(this.repo.logedinUser, 460, 100);
+                    doc.text('Date: ', 420, 120);
+                    doc.text(this.report.getDateUkformat((new Date())), 460, 120);
+                    doc.line(40, 130, 555, 130);
+                }
+                 // endregion Page header and footer
+                doc.save('DepartmentSales.pdf');
+              });
             // doc.autoPrint();
             // window.open(doc.output('bloburl'), '_blank');
         }

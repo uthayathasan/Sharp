@@ -74,6 +74,7 @@ const itemUrl = 'api/items';
                     }]
                 },
                 options : {
+                    maintainAspectRatio: false,
                     title: {
                         text: 'Top 20 Product\'s Sales',
                         display: true
@@ -110,6 +111,7 @@ const itemUrl = 'api/items';
                     }]
                 },
                 options : {
+                    maintainAspectRatio: false,
                     title: {
                         text: 'Top 20 Product\'s Sales',
                         display: true

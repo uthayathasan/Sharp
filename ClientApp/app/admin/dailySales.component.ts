@@ -73,6 +73,7 @@ export class DailySalesComponent implements OnInit {
             },
             options : {
                 title: {
+                    maintainAspectRatio: false,
                     text: 'Daily Sales',
                     display: true
                 },
@@ -108,6 +109,7 @@ export class DailySalesComponent implements OnInit {
                 }]
             },
             options : {
+                maintainAspectRatio: false,
                 title: {
                     text: 'Daily Sales',
                     display: true

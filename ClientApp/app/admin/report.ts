@@ -57,7 +57,26 @@ export class Report {
         this.dailySales.length = 0;
         this.dailySalesPeriod.initiated = false;
     }
+    public getDateUkformat(d?: Date) {
+        let month = (d.getMonth() + 1).toString();
+        if ((d.getMonth() + 1) < 10 ) {
+            month = '0' +  month;
+        }
+        let day = d.getDate().toString();
+        if (d.getDate() < 10) {
+            day = '0' + day;
+        }
+        let hour = d.getHours().toString();
+        if (d.getHours() < 10) {
+            hour = '0' + hour;
+        }
+        let minutes = d.getMinutes().toString();
+        if (d.getMinutes() < 10) {
+            minutes = '0' + minutes;
+        }
 
+        return  d.getFullYear().toString() + '-' + month + '-' + day + ' ' + hour + ':' + minutes;
+    }
     private getStartDateTime(d?: Date): string {
         let month = (d.getMonth() + 1).toString();
         if ((d.getMonth() + 1) < 10 ) {
