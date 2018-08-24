@@ -258,7 +258,7 @@ const departmentUrl = 'api/departments';
                     doc.setFontType('normal');
                     doc.setDrawColor(224, 224, 224);
                     doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Department', k, 'left');
-                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Qty' , k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Quantity' , k, 'left');
                     doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
                     doc.setFontSize(12);
                     doc.setFontType('normal');
@@ -272,7 +272,7 @@ const departmentUrl = 'api/departments';
                     doc.setFontType('normal');
                     doc.setDrawColor(224, 224, 224);
                     doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Department', k, 'left');
-                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Qty' , k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Quantity' , k, 'left');
                     doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
                     doc.setFontSize(12);
                     doc.setFontType('normal');
@@ -285,7 +285,7 @@ const departmentUrl = 'api/departments';
                 doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, element.qty.toString(), k, 'left');
                 doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, element.amount.toFixed(2), k, 'right');
                 k = k + 1;
-                pageNumber = Math.floor(k / 30) + 1;
+                pageNumber = Math.floor((k - 1) / 30) + 1;
             }
             // total
             doc.setFontSize(14);

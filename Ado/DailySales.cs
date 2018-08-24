@@ -26,7 +26,7 @@ namespace Sharp.Ado
             Sql +="where I.voidd=0 and DateTimeEnd between @Sd and @Ed ";
             Sql +="group by I.TrnNo,H.Dt ";
             Sql +="order by H.Dt ";
-            Sql +="select DayDate,[DayName],SUM(Amount) Amount from @S ";
+            Sql +="select DayDate,[DayName],SUM(Amount) Amount, COUNT(TrnNo) Trns from @S ";
             Sql +="group by DayDate,[DayName] ";
             Sql +="order by DayDate ";
             #endregion SQL
@@ -61,6 +61,7 @@ namespace Sharp.Ado
                         try{d.DayDate=reader.GetString(0);}catch{}
                         try{d.DayName=reader.GetString(1);}catch{}
                         try{d.Amount=reader.GetDecimal(2);}catch{}
+                        try{d.Trans=reader.GetInt32(3);}catch{}
                         #endregion Fill Model
                         lm.Add(d);
                     }

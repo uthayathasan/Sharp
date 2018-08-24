@@ -9,6 +9,8 @@ import * as Chart from 'chart.js';
 import { RequestMethod} from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Operator/map';
+import * as jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import { Report } from './report';
 const itemUrl = 'api/items';
 @Component({
@@ -59,6 +61,9 @@ const itemUrl = 'api/items';
                     this.gettop20().map(x => x.amount));
                 }
             }
+        }
+        get screenWidth(): number {
+            return this.repo.screenWidth;
         }
         getBarChart() {
             this.BarChart = new Chart('barChart', {
@@ -183,7 +188,14 @@ const itemUrl = 'api/items';
                 });
             }
         }
-        getTotal(): number {
+        getTotalQty(): number {
+            if ((this.report.itemsSales) && (this.report.itemsSales.length > 0)) {
+                return this.report.itemsSales.map(x => x.quantity).reduce((s, u) => s + u + 0);
+            } else {
+                return 0;
+            }
+        }
+        getTotalAmount(): number {
             if ((this.report.itemsSales) && (this.report.itemsSales.length > 0)) {
                 return this.report.itemsSales.map(x => x.amount).reduce((s, u) => s + u + 0);
             } else {
@@ -274,5 +286,109 @@ const itemUrl = 'api/items';
             } else {
                 return false;
             }
+        }
+        exportToPdf() {
+            const store = this.repo.selecttedStore;
+            const data = this.itemSales;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            doc.setFont('Open Sans', 'san-serif');
+            const leftMargin = 40;
+            const topMargin = 140;
+            const rowHeight = 20;
+            const cell1Width = 200;
+            const cell2Width = 100;
+            const cell3Width = 100;
+            const leftMargin2 = leftMargin +  cell1Width;
+            const leftMargin3 = leftMargin2 + cell2Width;
+            let currPage = 1;
+            let pageNumber = 1;
+            let k = 0;
+            for (let index = 0; index < data.length; index++) {
+                if ( k === 0) {
+                    doc.cellInitialize();
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.setDrawColor(224, 224, 224);
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Description', k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Quantity' , k, 'left');
+                    doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
+                    doc.setFontSize(12);
+                    doc.setFontType('normal');
+                    k = k + 1;
+                }
+                if (currPage <  pageNumber) {
+                    currPage =  pageNumber;
+                    doc.addPage();
+                    doc.cellInitialize();
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.setDrawColor(224, 224, 224);
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Description', k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Quantity' , k, 'left');
+                    doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
+                    doc.setFontSize(12);
+                    doc.setFontType('normal');
+                    k = k + 1;
+                }
+                // endregion table header
+                const element = data[index];
+                doc.setDrawColor(224, 224, 224);
+                doc.cell(leftMargin, topMargin, cell1Width, rowHeight, element.description, k, 'left');
+                doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, element.quantity.toString(), k, 'left');
+                doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, element.amount.toFixed(2), k, 'right');
+                k = k + 1;
+                pageNumber = Math.floor((k - 1) / 30) + 1;
+            }
+            // total
+            doc.setFontSize(14);
+            doc.setFontType('normal');
+            doc.setDrawColor(224, 224, 224);
+            doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Total', k, 'left');
+            doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, this.getTotalQty().toString(), k, 'left');
+            doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, this.getTotalAmount().toFixed(2), k, 'right');
+            doc.setFontSize(12);
+            doc.setFontType('normal');
+            // endregion total
+            const ele = document.getElementById('chartToPdf');
+            html2canvas(ele).then(canvas => {
+                // Few necessary setting options
+                const imgWidth = 500;
+                const pageHeight = 800;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                const heightLeft = imgHeight;
+                const contentDataURL = canvas.toDataURL('image/png');
+
+                doc.addPage();
+                doc.addImage(contentDataURL, 'PNG', 40, 140, imgWidth, imgHeight);
+                // region Page header and footer
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 0; i < pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(12);
+                    doc.text(570, 820, doc.internal.getCurrentPageInfo().pageNumber + '/' + pageCount);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.setFontSize(14);
+                    doc.setFontType('normal');
+                    doc.text(store.storeName, 40, 40);
+                    doc.text(store.address, 40, 60);
+                    doc.text(store.city, 40, 80);
+                    doc.text(store.postCode, 40, 100);
+
+                    doc.text('Product Sales', 420, 40);
+                    doc.text('From: ', 420, 60);
+                    const start = new Date(this.report.itemSalesPeriod.startDate);
+                    doc.text(this.report.getDateUkformat(start), 460, 60);
+                    doc.text('To  : ', 420, 80);
+                    const end = new Date(this.report.itemSalesPeriod.endDate);
+                    doc.text(this.report.getDateUkformat(end), 460, 80);
+                    doc.text('User: ', 420, 100);
+                    doc.text(this.repo.logedinUser, 460, 100);
+                    doc.text('Date: ', 420, 120);
+                    doc.text(this.report.getDateUkformat((new Date())), 460, 120);
+                    doc.line(40, 130, 555, 130);
+                }
+                 // endregion Page header and footer
+                doc.save('ProductSales.pdf');
+              });
         }
     }
