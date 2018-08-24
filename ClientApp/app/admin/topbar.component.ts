@@ -9,4 +9,8 @@ import {Interface} from './interface';
     })
     export class TopbarComponent {
         constructor(public authService: AuthenticationService, public inter: Interface) {}
+
+        get screenWidth(): number {
+            return this.inter.screenWidth;
+        }
     }

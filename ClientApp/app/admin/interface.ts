@@ -21,7 +21,7 @@ export class Interface {
                 this.setChild(tag);
             }
         });
-        if (this.repo.screenWidth <= 1024){
+        if (this.repo.screenWidth <= 1024) {
             this.toggle = 1;
         } else {
             this.toggle = -1;
@@ -34,6 +34,9 @@ export class Interface {
     toggle?: number;
     clickToggle() {
         this.toggle = -1 * this.toggle;
+    }
+    get screenWidth(): number {
+        return this.repo.screenWidth;
     }
     getToggle(): number {
         return this.toggle;

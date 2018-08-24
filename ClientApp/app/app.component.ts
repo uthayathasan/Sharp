@@ -26,7 +26,6 @@ export class AppComponent {
     return this.lastError;
   }
   onResized(event: ResizedEvent): void {
-    console.log(event.newWidth);
     this.repo.screenWidth = event.newWidth;
   }
 

@@ -15,10 +15,11 @@ import {TreeEvents} from './treeEvents';
 import { Report } from './report';
 import { DailySalesComponent } from './dailySales.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
+import { UserComponent } from './user.component';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
-    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent],
+    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent],
 providers: [Interface, TreeEvents, Report]
 })
 export class AdminModule {}
