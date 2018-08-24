@@ -21,7 +21,11 @@ export class Interface {
                 this.setChild(tag);
             }
         });
-        this.toggle = -1;
+        if (this.repo.screenWidth <= 1024){
+            this.toggle = 1;
+        } else {
+            this.toggle = -1;
+        }
         this.selectedNode = 'Stores';
         this.selectedChild = '';
     }

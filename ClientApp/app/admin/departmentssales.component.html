@@ -6,19 +6,19 @@
     </div>
 </div>
 <div class="row my-1">
-    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" *ngIf="screenWidth > 500">
         <form novalidate #authForm="ngForm">
             <table table-xs border="0">
                 <tr>
                     <th class="text-success">
-                        Enter Date Period
+                        Period
                     </th>
                     <td (click)="setPeriod('')">
-                        <input #name="ngModel" name="startDate" type="datetime-local" class="form-control form-control-sm form-control-xs" style="max-width: 250px;"
+                        <input #name="ngModel" name="startDate" type="datetime-local" class="form-control form-control-sm form-control-x px-0 mx-0" style="max-width: 200px;"
                         [(ngModel)]="startDate" required />
                     </td>
                     <td (click)="setPeriod('')">
-                        <input #name="ngModel" name="endDate" type="datetime-local" class="form-control form-control-sm form-control-xs" style="max-width: 250px;"
+                        <input #name="ngModel" name="endDate" type="datetime-local" class="form-control form-control-sm form-control-xs px-0 mx-0" style="max-width: 200px;"
                         [(ngModel)]="endDate" required />
                     </td>
                     <td>
@@ -28,14 +28,37 @@
             </table>
         </form>
     </div>    
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12" *ngIf="screenWidth <= 500">
+            <form novalidate #authForm="ngForm">
+                <table table-xs border="0">
+                    <tr>
+                        <th class="text-success">
+                            Start Date
+                        </th>
+                        <td (click)="setPeriod('')">
+                            <input #name="ngModel" name="startDate" type="datetime-local" class="form-control form-control-sm form-control-x px-0 mx-0" style="max-width: 200px;"
+                            [(ngModel)]="startDate" required />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th class="text-success">
+                            End Date
+                        </th>
+                        <td (click)="setPeriod('')">
+                            <input #name="ngModel" name="endDate" type="datetime-local" class="form-control form-control-sm form-control-xs px-0 mx-0" style="max-width: 200px;"
+                            [(ngModel)]="endDate" required />
+                        </td>
+                        <td>
+                            <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getDepartmentSales()">GET</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>    
 </div>
 <div class="row my-1">
     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
-        <div class="btn-group btn-group-justified">
-            <button type="button" class="btn btn-sm btn-warning" (click)="exportToPdf()">
-                Export Pdf
-            </button>
-        </div>
         <div class="pull-right">
             <div class="btn-group btn-group-justified">
                 <button type="button" class="btn btn-sm btn-primary" [ngClass]="{'active':period=='Today'}"
@@ -77,42 +100,52 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
         <div *ngIf="departmentSales?.length>0">
             <div class="text-danger">
-                Total Sales : {{getTotal().toFixed(2)}}
+                Total Sales : {{getTotalAmount().toFixed(2)}}
             </div>
-            <div class="w-100 m-0 p-0 pr-1" style="overflow-y:scroll; height:400px">
-                <table class="table table-xs table-striped">
-                    <thead class="m-0 p-0 bg-info text-white">
-                        <tr class="m-0 p-0">
-                            <th class="m-0 p-0 pl-1">Department</th>
-                            <th class="m-0 p-0 text-right">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody class="m-0 p-0">
-                        <tr *ngFor="let line of departmentSales" class="m-0 p-0">
-                            <td class="m-0 p-0 pl-1">
-                                {{line.department}}
-                            </td>
-                            <td class="m-0 p-0 text-right">
-                                {{line.amount.toFixed(2)}}
-                            </td>
-                        </tr>
-                        <tr class="m-0 p-0 text-danger">
-                            <td class="m-0 p-0 pl-1">
-                                Total
-                            </td>
-                            <td class="m-0 p-0 text-right">
-                                {{getTotal().toFixed(2)}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="table table-xs table-striped">
+                <thead class="m-0 p-0 bg-info text-white">
+                    <tr class="m-0 p-0">
+                        <th class="m-0 p-0 pl-1">Department</th>
+                        <th class="m-0 p-0 pl-1">Qty</th>
+                        <th class="m-0 p-0 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="m-0 p-0">
+                    <tr *ngFor="let line of departmentSales" class="m-0 p-0">
+                        <td class="m-0 p-0 pl-1">
+                            {{line.department}}
+                        </td>
+                        <td class="m-0 p-0 pl-1">
+                            {{line.qty}}
+                        </td>
+                        <td class="m-0 p-0 text-right">
+                            {{line.amount.toFixed(2)}}
+                        </td>
+                    </tr>
+                    <tr class="m-0 p-0 text-danger">
+                        <td class="m-0 p-0 pl-1">
+                            Total
+                        </td>
+                        <td class="m-0 p-0 pl-1">
+                            {{getTotalQty()}}
+                        </td>
+                        <td class="m-0 p-0 text-right">
+                            {{getTotalAmount().toFixed(2)}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pull-right">
+                <button type="button" class="btn btn-sm btn-success" (click)="exportToPdf()">
+                    Report
+                </button>
             </div>
         </div>
     </div>
-    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+    <div class="col-lg-8 col-md-7 col-sm-7 col-xs-12">
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-success" [ngClass]="{'active':chart=='Bar Chart'}"
                 (click)="setChart('Bar Chart')">

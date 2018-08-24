@@ -29,6 +29,7 @@ export class Repository {
     logedinUser?: string;
     private loggedInUserRole?: string;
     storeDto?: StoreDto;
+    screenWidth?: number;
     constructor(private http: Http, private localStorage: LocalStorage, private router: Router) {
         this.apiBusy = false;
         this.authorizations = [];

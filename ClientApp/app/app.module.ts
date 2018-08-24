@@ -9,6 +9,7 @@ import { AdminModule } from './admin/admin.module';
 
 import { ErrorHandler } from '@angular/core';
 import { ErrorHandlerService } from './errorHandler.service';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 import {RoutingConfig} from './app.routing';
 
@@ -21,7 +22,8 @@ export function handler() {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, FormsModule, HttpModule, ModelModule, RoutingConfig, AuthModule, AdminModule],
+  imports: [BrowserModule, AngularResizedEventModule, FormsModule, HttpModule, ModelModule, RoutingConfig,
+    AuthModule, AdminModule],
   providers: [{ provide: ErrorHandlerService, useFactory: handler}, { provide: ErrorHandler, useFactory: handler}],
   bootstrap: [AppComponent]
 })

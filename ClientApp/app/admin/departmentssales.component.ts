@@ -60,6 +60,9 @@ const departmentUrl = 'api/departments';
                 }
             }
         }
+        get screenWidth(): number {
+            return this.repo.screenWidth;
+        }
         getBarChart() {
             this.BarChart = new Chart('barChart', {
                 type: 'bar',
@@ -167,13 +170,20 @@ const departmentUrl = 'api/departments';
                 });
             }
         }
-        getTotal(): number {
+        getTotalAmount(): number {
             if ((this.departmentSales) && (this.departmentSales.length > 0)) {
                 return this.departmentSales.map(x => x.amount).reduce((s, u) => s + u + 0);
             } else {
                 return 0;
             }
 
+        }
+        getTotalQty(): number {
+            if ((this.departmentSales) && (this.departmentSales.length > 0)) {
+                return this.departmentSales.map(x => x.qty).reduce((s, u) => s + u + 0);
+            } else {
+                return 0;
+            }
         }
         get departmentSales(): DepartmentDto[] {
             return this.report.departmentsSales.sort((a , b) => {
@@ -233,8 +243,8 @@ const departmentUrl = 'api/departments';
             const leftMargin = 40;
             const topMargin = 140;
             const rowHeight = 20;
-            const cell1Width = 40;
-            const cell2Width = 200;
+            const cell1Width = 200;
+            const cell2Width = 100;
             const cell3Width = 100;
             const leftMargin2 = leftMargin +  cell1Width;
             const leftMargin3 = leftMargin2 + cell2Width;
@@ -247,8 +257,8 @@ const departmentUrl = 'api/departments';
                     doc.setFontSize(14);
                     doc.setFontType('normal');
                     doc.setDrawColor(224, 224, 224);
-                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Id', k, 'right');
-                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Qty' , k, 'left');
                     doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
                     doc.setFontSize(12);
                     doc.setFontType('normal');
@@ -261,8 +271,8 @@ const departmentUrl = 'api/departments';
                     doc.setFontSize(14);
                     doc.setFontType('normal');
                     doc.setDrawColor(224, 224, 224);
-                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Id', k, 'right');
-                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Department', k, 'left');
+                    doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, 'Qty' , k, 'left');
                     doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, 'Amount', k, 'right');
                     doc.setFontSize(12);
                     doc.setFontType('normal');
@@ -271,12 +281,22 @@ const departmentUrl = 'api/departments';
                 // endregion table header
                 const element = data[index];
                 doc.setDrawColor(224, 224, 224);
-                doc.cell(leftMargin, topMargin, cell1Width, rowHeight, element.id.toString(), k, 'right');
-                doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, element.department, k, 'left');
+                doc.cell(leftMargin, topMargin, cell1Width, rowHeight, element.department, k, 'left');
+                doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, element.qty.toString(), k, 'left');
                 doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, element.amount.toFixed(2), k, 'right');
                 k = k + 1;
                 pageNumber = Math.floor(k / 30) + 1;
             }
+            // total
+            doc.setFontSize(14);
+            doc.setFontType('normal');
+            doc.setDrawColor(224, 224, 224);
+            doc.cell(leftMargin, topMargin, cell1Width, rowHeight, 'Total', k, 'left');
+            doc.cell(leftMargin2, topMargin, cell2Width, rowHeight, this.getTotalQty().toString(), k, 'left');
+            doc.cell(leftMargin3, topMargin, cell3Width, rowHeight, this.getTotalAmount().toFixed(2), k, 'right');
+            doc.setFontSize(12);
+            doc.setFontType('normal');
+            // endregion total
             const ele = document.getElementById('chartToPdf');
             html2canvas(ele).then(canvas => {
                 // Few necessary setting options

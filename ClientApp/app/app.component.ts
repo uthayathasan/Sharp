@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { ErrorHandlerService } from './errorHandler.service';
 import { Repository } from './models/repository';
+import { ResizedEvent } from 'angular-resize-event/resized-event';
 
 const storesUrl = '/api/stores';
 @Component({
@@ -23,6 +24,10 @@ export class AppComponent {
   }
   get error(): string[] {
     return this.lastError;
+  }
+  onResized(event: ResizedEvent): void {
+    console.log(event.newWidth);
+    this.repo.screenWidth = event.newWidth;
   }
 
   get apiBusy() {

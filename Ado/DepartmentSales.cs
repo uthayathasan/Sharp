@@ -19,14 +19,14 @@ namespace Sharp.Ado
             List<DepartmentDto> lm=new List<DepartmentDto>();
             #region SQL
             string Sql="declare @Depart Table ";
-            Sql+="(dptno int,Amount money) ";
+            Sql+="(dptno int,qty bigint,Amount money) ";
             Sql+="insert into @Depart ";
-            Sql+="select dptno,sum(qty0*Price) from dbo.TranItems ";
+            Sql+="select dptno,sum(qty0),sum(qty0*Price) from dbo.TranItems ";
             Sql+="where TrnNo in( ";
             Sql+="select TrnNo from TranHeaders ";
             Sql+="where DateTimeEnd between @SD  and @ED) and voidd =0 ";
             Sql+="group by dptno ";
-            Sql+="select T.dptno,D.Name,T.Amount from @Depart T left join Depts D ";
+            Sql+="select T.dptno,D.Name,T.qty,T.Amount from @Depart T left join Depts D ";
             Sql+="on T.dptno=D.DptNo ";
             Sql+="where T.Amount <> 0 ";
             #endregion SQL
@@ -59,7 +59,8 @@ namespace Sharp.Ado
                         #region Fill Model
                         try{d.Id=reader.GetInt32(0);}catch{}
                         try{d.Department=reader.GetString(1).ToUpper();}catch{}
-                        try{d.Amount=reader.GetDecimal(2);}catch{}
+                        try{d.Qty=reader.GetInt64(2);}catch{}
+                        try{d.Amount=reader.GetDecimal(3);}catch{}
                         #endregion Fill Model
                         lm.Add(d);
                     }
