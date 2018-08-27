@@ -3,3 +3,4 @@ obj
 .vscode
 node_modules
 wwwroot
+.tmp.drivedownload
