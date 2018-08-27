@@ -20,7 +20,7 @@
                     <i class="fa fa-fw fa-bars" style="font-size:14px;">SHARP</i>
                 </a>
                 
-                <a class="navbar-brand  mx-0 px-0 text-light" style="cursor: pointer;font-size:14px" *ngIf="inter.getStore()!=null">
+                <a class="navbar-brand  mx-0 px-0 text-light" style="cursor: pointer;font-size:10px" *ngIf="inter.getStore()!=null">
                     <i class="fa fa-fw fa-building">{{inter.getStore()?.storeName||''}} [{{inter.getStore().postCode}}]</i>
                 </a>
                 <a class="navbar-brand mx-0 px-0 text-light pull-right pr-2" style="cursor: pointer;font-size:14px" (click)="authService.logout()" >
