@@ -59,10 +59,10 @@ namespace Sharp.Ado
                             DailySalesDto d=new DailySalesDto();
                             // DayDate,[DayName],SUM(Amount) Amount
                             #region Fill Model
-                            try{d.DayDate=reader.GetString(0);}catch{}
-                            try{d.DayName=reader.GetString(1);}catch{}
-                            try{d.Amount=reader.GetDecimal(2);}catch{}
-                            try{d.Trans=reader.GetInt32(3);}catch{}
+                            d.DayDate=reader.GetString(0);
+                            d.DayName=reader.GetString(1);
+                            d.Amount=reader.GetDecimal(2);
+                            d.Trans=reader.GetInt32(3);
                             #endregion Fill Model
                             lm.Add(d);
                         }

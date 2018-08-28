@@ -23,7 +23,7 @@ const transactionUrl = 'api/transactions';
             const url = transactionUrl + '/sales';
             this.repo.storeDto.startDate = '2018-07-01T00:00';
             this.repo.storeDto.endDate = '2018-09-01T00:00';
-            this.repo.storeDto.linesPerPage = 100;
+            this.repo.storeDto.linesPerPage = 20;
             this.repo.storeDto.pageNumber = 1;
             this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
                 console.log(response);
