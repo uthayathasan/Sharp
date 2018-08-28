@@ -47,5 +47,17 @@ namespace Sharp.Ado
             }
             return ob.GetDailySales(m);
         }
+        public Transactions GetTransctions(StoreDto m)
+        {
+            SalesTransactions ob=new SalesTransactions();
+            List<Store> stores=Context.Stores.Where(x=>x.Id==m.Id).ToList<Store>();
+            if(stores.Count>0)
+            {
+                m.PublicIp=stores[0].PublicIp;
+                m.Port=stores[0].Port;
+                m.DataBase=stores[0].DataBase;
+            }
+            return ob.GetTransactions(m);
+        }
     }
 }

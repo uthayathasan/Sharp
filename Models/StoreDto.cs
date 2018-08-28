@@ -18,5 +18,7 @@ namespace Sharp.Models
         public DateTime? Tick{get;set;}
         public string StartDate{get;set;}="";
         public string EndDate{get;set;}="";
+        public int PageNumber{get;set;}=0;
+        public int LinesPerPage{get;set;}=0;
     }
 }

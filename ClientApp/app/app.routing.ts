@@ -8,6 +8,7 @@ import { ChildsComponent } from './admin/childs.component';
 import {DepartmentsSalesComponent} from './admin/departmentsSales.component';
 import { ItemsSalesComponent } from './admin/ItemsSales.component';
 import { DailySalesComponent } from './admin/dailySales.component';
+import { TransactionsComponent } from './admin/transactions.Component';
 const routes: Routes = [
     { path: 'login', component: AuthenticationComponent },
     { path: '', redirectTo: '/admin/stores', pathMatch: 'full'},
@@ -22,6 +23,7 @@ const routes: Routes = [
             {path: 'departmentsSales', component: DepartmentsSalesComponent},
             {path: 'itemsSales', component: ItemsSalesComponent},
             {path: 'dailySales', component: DailySalesComponent},
+            {path: 'transactions', component: TransactionsComponent},
             { path: '', component: StoresComponent }]}
 ];
 export const RoutingConfig = RouterModule.forRoot(routes);

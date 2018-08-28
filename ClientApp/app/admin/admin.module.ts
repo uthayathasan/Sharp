@@ -16,10 +16,11 @@ import { Report } from './report';
 import { DailySalesComponent } from './dailySales.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { UserComponent } from './user.component';
+import { TransactionsComponent } from './transactions.Component';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
-    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent],
+    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent, TransactionsComponent],
 providers: [Interface, TreeEvents, Report]
 })
 export class AdminModule {}

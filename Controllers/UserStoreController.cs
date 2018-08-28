@@ -19,9 +19,9 @@ namespace Sharp.Controllers
          }
 
         [HttpGet]
-        public IEnumerable<UserStore> GetUsers(string storeId)
+        public IActionResult GetUsers(string storeId)
         {
-            return Context.UserStores.Where(x=>x.StoreId.Equals(storeId));
+            return Ok(Context.UserStores.Where(x=>x.StoreId.Equals(storeId)));
         }
     }
 }

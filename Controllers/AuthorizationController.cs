@@ -18,9 +18,9 @@ namespace Sharp.Controllers
             Context=ctx;
         }
         [HttpGet]
-        public IEnumerable<Authorization> GetAuthorizations()
+        public  IActionResult GetAuthorizations()
         {
-            return Context.Authorizations.Where(x=>x.Live && x.BackOffice);
+            return Ok(Context.Authorizations.Where(x=>x.Live && x.BackOffice));
         }
     }
 }

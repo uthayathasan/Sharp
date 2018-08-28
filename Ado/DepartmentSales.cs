@@ -52,17 +52,19 @@ namespace Sharp.Ado
                     command.Parameters.Add(param);
                     #endregion @ED
                     #endregion Param
-                    SqlDataReader reader = command.ExecuteReader();
-                    while(reader.Read())
+                    using(SqlDataReader reader = command.ExecuteReader())
                     {
-                        DepartmentDto d=new DepartmentDto();
-                        #region Fill Model
-                        try{d.Id=reader.GetInt32(0);}catch{}
-                        try{d.Department=reader.GetString(1).ToUpper();}catch{}
-                        try{d.Qty=reader.GetInt64(2);}catch{}
-                        try{d.Amount=reader.GetDecimal(3);}catch{}
-                        #endregion Fill Model
-                        lm.Add(d);
+                        while(reader.Read())
+                        {
+                            DepartmentDto d=new DepartmentDto();
+                            #region Fill Model
+                            try{d.Id=reader.GetInt32(0);}catch{}
+                            try{d.Department=reader.GetString(1).ToUpper();}catch{}
+                            try{d.Qty=reader.GetInt64(2);}catch{}
+                            try{d.Amount=reader.GetDecimal(3);}catch{}
+                            #endregion Fill Model
+                            lm.Add(d);
+                        }
                     }
                 }
             }

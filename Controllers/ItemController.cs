@@ -19,9 +19,17 @@ namespace Sharp.Controllers
             repo=_repo;
         }
         [HttpPost("sales")]
-        public IEnumerable<ItemDto> GetItemSales([FromBody] StoreDto m)
-         {
-            return repo.GetItemSales(m);
-         }
+        public IActionResult GetItemSales([FromBody] StoreDto m)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(repo.GetItemSales(m));
+            }
+            else
+            {
+                return BadRequest();
+            }
+            
+        }
     }
 }

@@ -52,18 +52,20 @@ namespace Sharp.Ado
                     command.Parameters.Add(param);
                     #endregion @Ed
                     #endregion Param
-                    SqlDataReader reader = command.ExecuteReader();
-                    while(reader.Read())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        DailySalesDto d=new DailySalesDto();
-                        // DayDate,[DayName],SUM(Amount) Amount
-                        #region Fill Model
-                        try{d.DayDate=reader.GetString(0);}catch{}
-                        try{d.DayName=reader.GetString(1);}catch{}
-                        try{d.Amount=reader.GetDecimal(2);}catch{}
-                        try{d.Trans=reader.GetInt32(3);}catch{}
-                        #endregion Fill Model
-                        lm.Add(d);
+                        while(reader.Read())
+                        {
+                            DailySalesDto d=new DailySalesDto();
+                            // DayDate,[DayName],SUM(Amount) Amount
+                            #region Fill Model
+                            try{d.DayDate=reader.GetString(0);}catch{}
+                            try{d.DayName=reader.GetString(1);}catch{}
+                            try{d.Amount=reader.GetDecimal(2);}catch{}
+                            try{d.Trans=reader.GetInt32(3);}catch{}
+                            #endregion Fill Model
+                            lm.Add(d);
+                        }
                     }
                 }
             }

@@ -19,9 +19,16 @@ namespace Sharp.Controllers
             repo=_repo;
         }
         [HttpPost("sales")]
-        public IEnumerable<DailySalesDto> GetDailySales([FromBody] StoreDto m)
-         {
-            return repo.GetDailySales(m);
-         }
+        public IActionResult GetDailySales([FromBody] StoreDto m)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(repo.GetDailySales(m));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
     }
 }

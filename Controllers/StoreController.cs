@@ -19,16 +19,16 @@ namespace Sharp.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Store> GetStores()
+        public IActionResult GetStores()
         {
-            return Context.Stores;
+            return Ok(Context.Stores);
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<Store> GetStore(string id)
+        public IActionResult GetStore(string id)
         {
             List<UserStore> userStores=Context.UserStores.Where(x=>x.UserId.Equals(id)).ToList<UserStore>();
-            return Context.Stores.Where(x=>userStores.Select(y=>y.StoreId).Contains(x.StoreId));
+            return Ok(Context.Stores.Where(x=>userStores.Select(y=>y.StoreId).Contains(x.StoreId)));
         }
     }
 

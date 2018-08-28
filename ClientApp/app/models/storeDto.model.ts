@@ -13,6 +13,8 @@ export class StoreDto {
         public macAddress?: string,
         public tick?: Date,
         public startDate?: string,
-        public endDate?: string
+        public endDate?: string,
+        public pageNumber?: number,
+        public linesPerPage?: number
     ) {}
 }

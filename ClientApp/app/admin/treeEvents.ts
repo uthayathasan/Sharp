@@ -14,6 +14,9 @@ export class TreeEvents {
         } else
         if (tag === 'Daily Sales') {
             this.router.navigateByUrl('/admin/dailySales');
+        } else
+        if (tag === 'Transactions') {
+            this.router.navigateByUrl('/admin/transactions');
         }
     }
 }

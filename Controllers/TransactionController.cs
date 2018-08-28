@@ -7,30 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 using Sharp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Sharp.Ado;
-
 namespace Sharp.Controllers
 {
     [Authorize]
-    [Route("api/departments")]
-    public class DepartmentController:Controller
+    [Route("api/transactions")]
+    public class TransactionController:Controller
     {
         private Repository repo;
-        public DepartmentController(Repository _repo)
+        public TransactionController(Repository _repo)
         {
             repo=_repo;
         }
         [HttpPost("sales")]
-         public IActionResult GetDepartmentSales([FromBody] StoreDto m)
-         {
+        public IActionResult GetItemSales([FromBody] StoreDto m)
+        {
             if (ModelState.IsValid)
             {
-                return Ok(repo.GetDepartmentSales(m));
+                return Ok(repo.GetTransctions(m));
             }
             else
             {
                 return BadRequest();
             }
-           
-         }
+        }
+        
     }
 }
