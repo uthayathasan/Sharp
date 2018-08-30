@@ -58,10 +58,10 @@ namespace Sharp.Ado
                         {
                             DepartmentDto d=new DepartmentDto();
                             #region Fill Model
-                            d.Id=reader.GetInt32(0);
-                            d.Department=reader.GetString(1).ToUpper();
-                            d.Qty=reader.GetInt64(2);
-                            d.Amount=reader.GetDecimal(3);
+                            try{d.Id=reader.GetInt32(0);}catch{}
+                            try{d.Department=reader.GetString(1).ToUpper();}catch{}
+                            try{d.Qty=reader.GetInt64(2);}catch{}
+                            try{d.Amount=reader.GetDecimal(3);}catch{}
                             #endregion Fill Model
                             lm.Add(d);
                         }

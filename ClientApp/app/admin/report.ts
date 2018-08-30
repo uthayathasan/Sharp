@@ -3,6 +3,7 @@ import {DepartmentDto} from '../models/departmentDto.model';
 import {ItemDto} from '../models/itemDto.model';
 import {Period} from '../models/period.model';
 import { DailySalesDto } from '../models/dailySalesDto.model';
+import { Transactions } from '../models/transactions.model';
 @Injectable()
 export class Report {
     departmentSalesPeriod?: Period;
@@ -13,6 +14,8 @@ export class Report {
 
     dailySalesPeriod?: Period;
     dailySales?: DailySalesDto[];
+
+    transactions?: Transactions;
 
     constructor() {
         const d = new Date(Date.now());

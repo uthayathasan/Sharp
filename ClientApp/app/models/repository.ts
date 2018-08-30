@@ -59,14 +59,14 @@ export class Repository {
                     try {
                         jsonData = errorResponse.json();
                     } catch (e) {
-                        throw new Error('Network Error');
-                        // throw new Error(errorResponse.toString());
+                        // throw new Error('Network Error');
+                        throw new Error(errorResponse.toString());
                     }
                     const messages = Object.getOwnPropertyNames(jsonData).map(p => jsonData[p]);
                     throw new ValidationError(messages);
                 }
-                throw new Error('Network Error');
-                // throw new Error(errorResponse.toString());
+                // throw new Error('Network Error');
+                throw new Error(errorResponse.toString());
             });
         }
     public getStores() {

@@ -61,11 +61,11 @@ namespace Sharp.Ado
                             ItemDto d=new ItemDto();
                             //T.dptno,D.Name,T.[Description],T.qty,T.Amount
                             #region Fill Model
-                            d.DepartmentId=reader.GetInt32(0);
-                            d.DepartmentName=reader.GetString(1).ToUpper();
-                            d.Description=reader.GetString(2).ToUpper();
-                            d.Quantity=reader.GetInt32(3);
-                            d.Amount=reader.GetDecimal(4);
+                            try{d.DepartmentId=reader.GetInt32(0);}catch{}
+                            try{d.DepartmentName=reader.GetString(1).ToUpper();}catch{}
+                            try{d.Description=reader.GetString(2).ToUpper();}catch{}
+                            try{d.Quantity=reader.GetInt32(3);}catch{}
+                            try{d.Amount=reader.GetDecimal(4);}catch{}
                             #endregion Fill Model
                             lm.Add(d);
                         }

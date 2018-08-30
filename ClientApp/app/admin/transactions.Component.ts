@@ -9,13 +9,13 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Operator/map';
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import { Report } from './report';
+import { Report} from './report';
 const transactionUrl = 'api/transactions';
 @Component({
     templateUrl: 'transactions.component.html'
     })
     export class TransactionsComponent implements OnInit {
-        constructor(private repo: Repository) {}
+        constructor(private repo: Repository, private report: Report) {}
         ngOnInit() {
             this.getTransactions();
         }
@@ -24,9 +24,10 @@ const transactionUrl = 'api/transactions';
             this.repo.storeDto.startDate = '2018-07-01T00:00';
             this.repo.storeDto.endDate = '2018-09-01T00:00';
             this.repo.storeDto.linesPerPage = 20;
-            this.repo.storeDto.pageNumber = 1;
+            this.repo.storeDto.pageNumber = 10;
             this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
-                console.log(response);
+                this.report.transactions = response;
+                //console.log(this.report.transactions.transItems);
             });
         }
     }
