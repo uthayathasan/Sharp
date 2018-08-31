@@ -169,9 +169,6 @@
                                 <thead class="m-0 p-0 bg-secondary text-white">
                                     <tr class="m-0 p-0">
                                         <th class="m-0 p-0 pl-1">
-                                            TrnNo
-                                        </th>
-                                        <th class="m-0 p-0 pl-1">
                                             Pym No
                                         </th>
                                         <th class="m-0 p-0 pl-1">
@@ -190,7 +187,6 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let line of TransPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
-                                        <td class="m-0 p-0 pl-1">{{line.trnNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymtype}}</td>
                                         <td class="m-0 p-0 text-right">{{line.amnt.toFixed(2)}}</td>
@@ -270,9 +266,6 @@
                                 <thead class="m-0 p-0 bg-secondary text-white">
                                     <tr class="m-0 p-0">
                                         <th class="m-0 p-0 pl-1">
-                                            TrnNo
-                                        </th>
-                                        <th class="m-0 p-0 pl-1">
                                             Pym No
                                         </th>
                                         <th class="m-0 p-0 pl-1">
@@ -291,7 +284,6 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let line of TransPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
-                                        <td class="m-0 p-0 pl-1">{{line.trnNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymtype}}</td>
                                         <td class="m-0 p-0 text-right">{{line.amnt.toFixed(2)}}</td>
