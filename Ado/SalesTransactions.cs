@@ -32,10 +32,11 @@ namespace Sharp.Ado
             Sql +="Receipted int,nitems int,npayms int,ncovers int,TotalDiscS money,trnsplit bigint,Till int,Shift int) ";
 
             Sql +="insert into @Trans ";
-            Sql +="select ROW_NUMBER() OVER (ORDER BY TrnNo) AS Row,DateTimeStart,DateTimeEnd,TradingDate,TrnNo,TotValue, ";
+            Sql +="select ROW_NUMBER() OVER (ORDER BY DateTimeEnd) AS Row,DateTimeStart,DateTimeEnd,TradingDate,TrnNo,TotValue, ";
             Sql +="TblNo,Split,SrvNo,StructVersion,voidd,BillPrinted,CashedOff,Wastage,Receipted,nitems,npayms,ncovers, ";
             Sql +="TotalDiscS,trnsplit,Till,Shift ";
             Sql +="FROM TranHeaders where DateTimeEnd between @StartDate and @EndDate ";
+            Sql +="order by DateTimeEnd ";
 
             Sql +="insert into @TransHeaders ";
             Sql +="(DateTimeStart,DateTimeEnd,TradingDate,TrnNo,TotValue, ";
@@ -48,6 +49,8 @@ namespace Sharp.Ado
             Sql +="npayms,ncovers,TotalDiscS,trnsplit,Till,Shift from @Trans ";
             Sql +="WHERE RowNumber > (@PageNumber - 1) * @LinesPerPage ";
             Sql +="AND RowNumber <= @PageNumber * @LinesPerPage ";
+            Sql +="order by DateTimeEnd ";
+
 
             Sql +="SELECT @HowManyLines = COUNT(RowNumber) FROM @Trans ";
 
@@ -55,7 +58,7 @@ namespace Sharp.Ado
             Sql +="TblNo,Split,SrvNo,StructVersion,voidd, ";
             Sql +="BillPrinted,CashedOff,Wastage,Receipted,nitems, ";
             Sql +="npayms,ncovers,TotalDiscS,trnsplit,Till,Shift ";
-            Sql +="from @TransHeaders order by TrnNo ;  ";
+            Sql +="from @TransHeaders order by  DateTimeEnd ;  ";
 
             Sql +="select @HowManyLines ; ";
 

@@ -25,9 +25,10 @@ import { Report } from './report';
             this.repo.selecttedStore = store;
             this.repo.setStoreDto();
             this.saveStore(store);
-            this.router.navigateByUrl('/admin/nodes');
         }
         saveStore(store: Store) {
-            this.localStorage.setItem('store', store).subscribe(() => {});
+            this.localStorage.setItem('store', store).subscribe(() => {
+                this.router.navigateByUrl('/admin/nodes');
+            });
         }
     }

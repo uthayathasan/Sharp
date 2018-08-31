@@ -4,6 +4,7 @@ import {ItemDto} from '../models/itemDto.model';
 import {Period} from '../models/period.model';
 import { DailySalesDto } from '../models/dailySalesDto.model';
 import { Transactions } from '../models/transactions.model';
+import { TransactionHeaders } from '../models/transactionHeaders.model';
 @Injectable()
 export class Report {
     departmentSalesPeriod?: Period;
@@ -15,7 +16,9 @@ export class Report {
     dailySalesPeriod?: Period;
     dailySales?: DailySalesDto[];
 
+    transactionsPeriod?: Period;
     transactions?: Transactions;
+    selectedHeader?: TransactionHeaders;
 
     constructor() {
         const d = new Date(Date.now());
@@ -35,6 +38,13 @@ export class Report {
         this.itemSalesPeriod.periodName = 'Today';
         this.itemSalesPeriod.chart = 'Bar Chart';
         this.itemsSales = [];
+
+        this.transactionsPeriod = new Period();
+        this.transactionsPeriod.startDate = ds;
+        this.transactionsPeriod.endDate = de;
+        this.transactionsPeriod.periodName = 'Today';
+        this.transactionsPeriod.pageNumber = 1;
+        this.transactionsPeriod.linesPerPage = 10;
 
         const dd = new Date(Date.now());
         dd.setDate(dd.getDate() - 10);
@@ -59,6 +69,10 @@ export class Report {
 
         this.dailySales.length = 0;
         this.dailySalesPeriod.initiated = false;
+
+        this.transactions = null;
+        this.transactionsPeriod.initiated = false;
+        this.selectedHeader = null;
     }
     public getDateUkformat(d?: Date) {
         let month = (d.getMonth() + 1).toString();

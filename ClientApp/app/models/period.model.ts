@@ -4,6 +4,8 @@ export class Period {
         public endDate?: string,
         public initiated?: boolean,
         public periodName?: string,
-        public chart?: string
+        public chart?: string,
+        public pageNumber?: number,
+        public linesPerPage?: number
     ) {}
 }

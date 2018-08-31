@@ -52,7 +52,7 @@ export class Repository {
                         this.router.navigateByUrl('/login');
                         location.reload();
                     });
-                    throw new Error('Please Sign In');
+                    throw new Error('Please wait');
                 }
                 if (errorResponse.status === 400 ) {
                     let jsonData: string;

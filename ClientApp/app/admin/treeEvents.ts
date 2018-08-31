@@ -6,7 +6,6 @@ export class TreeEvents {
     constructor(private repo: Repository, private router: Router) {}
     public event(tag?: string) {
         if (tag === 'Department Sales') {
-            // this.repo.getDepartmentSales();
             this.router.navigateByUrl('/admin/departmentsSales');
         } else
         if (tag === 'Item Sales') {

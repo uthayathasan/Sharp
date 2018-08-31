@@ -8,11 +8,22 @@ import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class Interface {
+    selectedNode?: string;
+    selectedChild?: string;
+    toggle?: number;
     constructor(private repo: Repository, private localStorage: LocalStorage, private router: Router, private events: TreeEvents) {
+        this.toggle = 1;
+        if (this.repo.screenWidth <= 1024) {
+            this.toggle = 1;
+        } else {
+            this.toggle = -1;
+        }
+        this.selectedNode = 'Stores';
+        this.selectedChild = '';
         this.getRootTag().subscribe(response => {
             if (response) {
                 const tag = response;
-                this.setNode(tag);
+                this.setNodeFirst(tag);
             }
         });
         this.getChildTag().subscribe(response => {
@@ -21,17 +32,7 @@ export class Interface {
                 this.setChild(tag);
             }
         });
-        if (this.repo.screenWidth <= 1024) {
-            this.toggle = 1;
-        } else {
-            this.toggle = -1;
-        }
-        this.selectedNode = 'Stores';
-        this.selectedChild = '';
     }
-    selectedNode?: string;
-    selectedChild?: string;
-    toggle?: number;
     clickToggle() {
         this.toggle = -1 * this.toggle;
     }
@@ -164,7 +165,17 @@ export class Interface {
     setNode(tag: string) {
         if (tag) {
             this.selectedChild = '';
-            this.localStorage.removeItem('childTag').subscribe(() => {});
+            this.localStorage.removeItem('childTag').subscribe(() => {
+                this.saveRootTag(tag);
+                this.selectedNode = tag;
+                if (tag === 'Stores') {this.router.navigateByUrl('/admin/stores'); } else
+                if (tag === 'Home') {this.router.navigateByUrl('/admin/nodes'); } else {
+                    this.router.navigateByUrl('/admin/childs'); }
+                });
+        }
+    }
+    private setNodeFirst(tag: string) {
+        if (tag) {
             this.saveRootTag(tag);
             this.selectedNode = tag;
             if (tag === 'Stores') {this.router.navigateByUrl('/admin/stores'); } else
