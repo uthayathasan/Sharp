@@ -313,12 +313,7 @@ const departmentUrl = 'api/departments';
             }
         }
         getSales() {
-            this.getItemSales();
-            this.getDepartmentSales();
-            this.getDailySales();
-        }
-        private getItemSales() {
-            const url = itemUrl + '/sales';
+            let url = dailySalesUrl + '/sales';
             this.repo.storeDto.startDate = this.startDate;
             this.repo.storeDto.endDate = this.endDate;
             if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
@@ -326,11 +321,20 @@ const departmentUrl = 'api/departments';
                 this.dashboard.dashboardPeriod.endDate = this.endDate;
                 this.repo.apiBusy = true;
                 this.savePeriod(this.dashboard.dashboardPeriod);
-                this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
-                    this.dashboard.itemsSales = response;
-                    this.getItemCharts();
-                    this.repo.apiBusy = false;
-                    // this.getDepartmentsSales();
+                this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response1 => {
+                    this.dashboard.dailySales = response1;
+                    this.getDailySalesCharts();
+                    url = departmentUrl + '/sales';
+                    this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response2 => {
+                        this.dashboard.departmentsSales = response2;
+                        this.getDepartmentCharts();
+                        url = itemUrl + '/sales';
+                        this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response3 => {
+                            this.dashboard.itemsSales = response3;
+                            this.getItemCharts();
+                            this.repo.apiBusy = false;
+                        });
+                    });
                 });
             }
         }
@@ -480,23 +484,6 @@ const departmentUrl = 'api/departments';
                 this.removeData(this.DepartmentPieChartQty);
                 this.addData(this.DepartmentPieChartQty, this.departmentQty.map(x => x.department),
                 this.departmentQty.map(x => x.qty));
-            }
-        }
-        private getDepartmentSales() {
-            const url = departmentUrl + '/sales';
-            this.repo.storeDto.startDate = this.startDate;
-            this.repo.storeDto.endDate = this.endDate;
-
-            if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
-                this.dashboard.dashboardPeriod.startDate = this.startDate;
-                this.dashboard.dashboardPeriod.endDate = this.endDate;
-                this.repo.apiBusy = true;
-                this.savePeriod(this.dashboard.dashboardPeriod);
-                this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
-                    this.dashboard.departmentsSales = response;
-                    this.getDepartmentCharts();
-                    this.repo.apiBusy = false;
-                });
             }
         }
         get chartLabels() {
@@ -653,22 +640,6 @@ const departmentUrl = 'api/departments';
                         this.addData(this.DailyPieChartQty, this.chartLabels,
                         this.dailySales.map(x => x.trans));
                     }
-        }
-        private getDailySales() {
-            const url = dailySalesUrl + '/sales';
-            this.repo.storeDto.startDate = this.startDate;
-            this.repo.storeDto.endDate = this.endDate;
-            if ( this.repo.storeDto.startDate &&  this.repo.storeDto.endDate) {
-                this.dashboard.dashboardPeriod.startDate = this.startDate;
-                this.dashboard.dashboardPeriod.endDate = this.endDate;
-                this.repo.apiBusy = true;
-                this.savePeriod(this.dashboard.dashboardPeriod);
-                this.repo.sendRequest(RequestMethod.Post, url, this.repo.storeDto).subscribe(response => {
-                    this.dashboard.dailySales = response;
-                    this.getDailySalesCharts();
-                    this.repo.apiBusy = false;
-                });
-            }
         }
         setPeriod(tag?: string) {
             if (tag !== this.dashboard.dashboardPeriod.periodName) {
