@@ -17,10 +17,13 @@ import { DailySalesComponent } from './dailySales.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { UserComponent } from './user.component';
 import { TransactionsComponent } from './transactions.Component';
+import {DashboardComponent} from './dashboard.component';
+import { Dashboard } from './dashboard';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
-    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent, TransactionsComponent],
-providers: [Interface, TreeEvents, Report]
+    DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent,
+     TransactionsComponent, DashboardComponent],
+providers: [Interface, TreeEvents, Report, Dashboard]
 })
 export class AdminModule {}

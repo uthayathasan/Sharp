@@ -23,7 +23,7 @@ export class Interface {
         this.getRootTag().subscribe(response => {
             if (response) {
                 const tag = response;
-                this.setNodeFirst(tag);
+                this.routeNode(tag);
             }
         });
         this.getChildTag().subscribe(response => {
@@ -166,20 +166,17 @@ export class Interface {
         if (tag) {
             this.selectedChild = '';
             this.localStorage.removeItem('childTag').subscribe(() => {
-                this.saveRootTag(tag);
-                this.selectedNode = tag;
-                if (tag === 'Stores') {this.router.navigateByUrl('/admin/stores'); } else
-                if (tag === 'Home') {this.router.navigateByUrl('/admin/nodes'); } else {
-                    this.router.navigateByUrl('/admin/childs'); }
-                });
+               this.routeNode(tag);
+            });
         }
     }
-    private setNodeFirst(tag: string) {
+    private routeNode(tag: string) {
         if (tag) {
             this.saveRootTag(tag);
             this.selectedNode = tag;
             if (tag === 'Stores') {this.router.navigateByUrl('/admin/stores'); } else
-            if (tag === 'Home') {this.router.navigateByUrl('/admin/nodes'); } else {
+            if (tag === 'Home') {this.router.navigateByUrl('/admin/nodes'); } else
+            if (tag === 'Dashboard') {this.router.navigateByUrl('/admin/dashboard'); } else {
                 this.router.navigateByUrl('/admin/childs'); }
         }
     }

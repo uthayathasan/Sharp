@@ -5,12 +5,13 @@ import { Router } from '@angular/router';
 import { LocalStorage } from '@ngx-pwa/local-storage';
 import { Interface } from './interface';
 import { Report } from './report';
+import { Dashboard } from './dashboard';
 @Component({
     templateUrl: 'stores.component.html'
     })
     export class StoresComponent implements OnInit {
         constructor(private repo: Repository, private report: Report, private inter: Interface,
-             private router: Router, private localStorage: LocalStorage) {}
+             private router: Router, private localStorage: LocalStorage, private dashboared: Dashboard) {}
         ngOnInit() {
             this.inter.setNode('Stores');
             this.repo.getStores();
@@ -21,6 +22,7 @@ import { Report } from './report';
         setStore(store: Store) {
             if (this.repo.selecttedStore !== store) {
                 this.report.reset();
+                this.dashboared.reset();
             }
             this.repo.selecttedStore = store;
             this.repo.setStoreDto();
