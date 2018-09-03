@@ -16,14 +16,15 @@ import { Report } from './report';
 import { DailySalesComponent } from './dailySales.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { UserComponent } from './user.component';
-import { TransactionsComponent } from './transactions.Component';
+import { TransactionsComponent } from './transactions.component';
 import {DashboardComponent} from './dashboard.component';
 import { Dashboard } from './dashboard';
+import { VoidTransactionsComponent } from './voidTransactions.component';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
     DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent,
-     TransactionsComponent, DashboardComponent],
+     TransactionsComponent, DashboardComponent, VoidTransactionsComponent],
 providers: [Interface, TreeEvents, Report, Dashboard]
 })
 export class AdminModule {}

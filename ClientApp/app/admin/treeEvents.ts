@@ -16,6 +16,9 @@ export class TreeEvents {
         } else
         if (tag === 'Transactions') {
             this.router.navigateByUrl('/admin/transactions');
+        } else
+        if (tag === 'Void Transactions') {
+            this.router.navigateByUrl('/admin/voids');
         }
     }
 }

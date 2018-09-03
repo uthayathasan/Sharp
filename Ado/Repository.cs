@@ -59,5 +59,17 @@ namespace Sharp.Ado
             }
             return ob.GetTransactions(m);
         }
+        public Transactions GetVoidTransactions(StoreDto m)
+        {
+            VoidSalesTransaction ob =new VoidSalesTransaction();
+            List<Store> stores=Context.Stores.Where(x=>x.Id==m.Id).ToList<Store>();
+            if(stores.Count>0)
+            {
+                m.PublicIp=stores[0].PublicIp;
+                m.Port=stores[0].Port;
+                m.DataBase=stores[0].DataBase;
+            }
+            return ob.GetVoidTransactions(m);
+        }
     }
 }

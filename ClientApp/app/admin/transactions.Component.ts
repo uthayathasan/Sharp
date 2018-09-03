@@ -164,11 +164,11 @@ const transactionUrl = 'api/transactions';
                 return false;
             }
         }
-        get TransItens(): TransactionItems[] {
+        get transItems(): TransactionItems[] {
             const trnNo = this.report.selectedHeader.trnNo;
             return this.report.transactions.transItems.filter(x => x.trnNo === trnNo);
         }
-        get TransPayments(): TransactionPayments[] {
+        get transPayments(): TransactionPayments[] {
             const trnNo = this.report.selectedHeader.trnNo;
             return this.report.transactions.transPayments.filter(x => x.trnNo === trnNo);
         }

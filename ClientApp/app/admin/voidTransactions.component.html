@@ -1,7 +1,7 @@
 <div class="row">
     <div class="w-100 m-0 p-0 text-center">
         <h5 class="text-success">
-            Transactions
+            Void Transactions
         </h5>
     </div>
 </div>
@@ -22,7 +22,7 @@
                         [(ngModel)]="endDate" required />
                     </td>
                     <td>
-                        <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getTransactions()">GET</button>
+                        <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getVoidTransactions()">GET</button>
                     </td>
                 </tr>
             </table>
@@ -50,7 +50,7 @@
                         [(ngModel)]="endDate" required />
                     </td>
                     <td>
-                        <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getTransactions()">GET</button>
+                        <button class="btn btn-success btn-sm btn-xs" [disabled]="authForm.invalid" (click)="getVoidTransactions()">GET</button>
                     </td>
                 </tr>
             </table>
@@ -101,7 +101,7 @@
 </div>
 <div class="row" *ngIf="screenWidth > 500">
     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
-        <div *ngIf="transHeaders !== null">
+        <div *ngIf="voidTransHeaders !== null">
                 <table class="table table-xs table-striped">
                         <thead class="m-0 p-0 bg-info text-white">
                             <tr class="m-0 p-0">
@@ -115,10 +115,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let line of transHeaders" class="m-0 p-0" [ngClass]="{'text-danger': line.voidd === 1}">
-                                <ng-template [ngIf]="!isSelectedHeader(line)" [ngIfElse]="transLines">
+                            <tr *ngFor="let line of voidTransHeaders" class="m-0 p-0" [ngClass]="{'text-danger': line.voidd === 1}">
+                                <ng-template [ngIf]="!isVoidSelectedHeader(line)" [ngIfElse]="transLines">
                                     <td class="m-0 p-0 pl-1">{{line.dateTimeEnd.replace('T',' ')}}</td>
-                                    <td class="m-0 p-0 pl-1"(click)="selectHeader(line)">{{line.trnNo}}
+                                    <td class="m-0 p-0 pl-1"(click)="selectVoidHeader(line)">{{line.trnNo}}
                                         <i class="fa fa-angle-down"></i>
                                     </td>
                                     <td class="m-0 p-0 text-center">{{line.srvNo}}</td>
@@ -132,12 +132,12 @@
                 </table>
                 <ng-template #transLines>
                     <td colspan="7" >
-                        <span class="badge badge-secondary">{{selectedHeader.trnNo}}</span>
-                        <span class="badge badge-pill badge-dark">{{selectedHeader.nitems}}</span>
-                        <span class="badge badge-pill badge-info">{{selectedHeader.totValue.toFixed(2)}}</span>
+                        <span class="badge badge-secondary">{{voidSelectedHeader.trnNo}}</span>
+                        <span class="badge badge-pill badge-dark">{{voidSelectedHeader.nitems}}</span>
+                        <span class="badge badge-pill badge-info">{{voidSelectedHeader.totValue.toFixed(2)}}</span>
                         <table class="table table-xs table-striped my-0 py-0">
                                 <thead class="m-0 p-0 bg-secondary text-white">
-                                    <tr class="m-0 p-0" (click)="setSelectedHeaderNull()">
+                                    <tr class="m-0 p-0" (click)="setVoidSelectedHeaderNull()">
                                         <th class="m-0 p-0 pl-1">
                                             Description
                                             <i class="fa fa-angle-up"></i>
@@ -157,7 +157,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let line of transItems" class="m-0 p-0"  
+                                    <tr *ngFor="let line of voidTransItems" class="m-0 p-0"  
                                     [ngClass]="{'text-danger': line.voidd === 1,'bg-danger text-white': line.refund === 1}">
                                         <td class="m-0 p-0 pl-1">{{line.description}}</td>
                                         <td class="m-0 p-0 text-right">{{line.qty0}}</td>
@@ -187,7 +187,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let line of transPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
+                                    <tr *ngFor="let line of voidTransPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
                                         <td class="m-0 p-0 pl-1">{{line.pymNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymtype}}</td>
                                         <td class="m-0 p-0 text-right">{{line.amnt.toFixed(2)}}</td>
@@ -203,7 +203,7 @@
 </div>
 <div class="row" *ngIf="screenWidth <= 500">
     <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
-        <div *ngIf="transHeaders !== null">
+        <div *ngIf="voidTransHeaders !== null">
                 <table class="table table-xs table-striped">
                         <thead class="m-0 p-0 bg-info text-white">
                             <tr class="m-0 p-0">
@@ -215,10 +215,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let line of transHeaders" class="m-0 p-0" [ngClass]="{'text-danger': line.voidd === 1}">
-                                <ng-template [ngIf]="!isSelectedHeader(line)" [ngIfElse]="transLines">
+                            <tr *ngFor="let line of voidTransHeaders" class="m-0 p-0" [ngClass]="{'text-danger': line.voidd === 1}">
+                                <ng-template [ngIf]="!isVoidSelectedHeader(line)" [ngIfElse]="transLines">
                                     <td class="m-0 p-0 pl-1">{{line.dateTimeEnd.replace('T',' ')}}</td>
-                                    <td class="m-0 p-0 pl-1"(click)="selectHeader(line)">{{line.trnNo}}
+                                    <td class="m-0 p-0 pl-1"(click)="selectVoidHeader(line)">{{line.trnNo}}
                                         <i class="fa fa-angle-down"></i>
                                     </td>
                                     <td class="m-0 p-0 text-center">{{line.srvNo}}</td>
@@ -230,12 +230,12 @@
                 </table>
                 <ng-template #transLines>
                     <td colspan="6" >
-                        <span class="badge badge-secondary">{{selectedHeader.trnNo}}</span>
-                        <span class="badge badge-pill badge-dark">{{selectedHeader.nitems}}</span>
-                        <span class="badge badge-pill badge-info">{{selectedHeader.totValue.toFixed(2)}}</span>
+                        <span class="badge badge-secondary">{{voidSelectedHeader.trnNo}}</span>
+                        <span class="badge badge-pill badge-dark">{{voidSelectedHeader.nitems}}</span>
+                        <span class="badge badge-pill badge-info">{{voidSelectedHeader.totValue.toFixed(2)}}</span>
                         <table class="table table-xs table-striped my-0 py-0">
                                 <thead class="m-0 p-0 bg-secondary text-white">
-                                    <tr class="m-0 p-0"  (click)="setSelectedHeaderNull()">
+                                    <tr class="m-0 p-0"  (click)="setVoidSelectedHeaderNull()">
                                         <th class="m-0 p-0 pl-1">
                                             Description
                                             <i class="fa fa-angle-up"></i>
@@ -255,7 +255,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let line of transItems" class="m-0 p-0"  
+                                    <tr *ngFor="let line of voidTransItems" class="m-0 p-0"  
                                     [ngClass]="{'text-danger': line.voidd === 1,'bg-danger text-white': line.refund === 1}">
                                         <td class="m-0 p-0 pl-1">{{line.description}}</td>
                                         <td class="m-0 p-0 text-right">{{line.qty0}}</td>
@@ -285,7 +285,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let line of transPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
+                                    <tr *ngFor="let line of voidTransPayments" class="m-0 p-0"  [ngClass]="{'text-danger': line.voidd === 1}">
                                         <td class="m-0 p-0 pl-1">{{line.pymNo}}</td>
                                         <td class="m-0 p-0 pl-1">{{line.pymtype}}</td>
                                         <td class="m-0 p-0 text-right">{{line.amnt.toFixed(2)}}</td>
