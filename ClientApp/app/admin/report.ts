@@ -24,6 +24,10 @@ export class Report {
     voidTransactions?: Transactions;
     voidSelectedHeader?: TransactionHeaders;
 
+    refundTransactionsPeriod?: Period;
+    refundTransactions?: Transactions;
+    refundSelectedHeader?: TransactionHeaders;
+
     constructor() {
         const d = new Date(Date.now());
         const ds = this.getStartDateTime(d);
@@ -57,6 +61,13 @@ export class Report {
         this.voidTransactionsPeriod.pageNumber = 1;
         this.voidTransactionsPeriod.linesPerPage = 10;
 
+        this.refundTransactionsPeriod = new Period();
+        this.refundTransactionsPeriod.startDate = ds;
+        this.refundTransactionsPeriod.endDate = de;
+        this.refundTransactionsPeriod.periodName = 'Today';
+        this.refundTransactionsPeriod.pageNumber = 1;
+        this.refundTransactionsPeriod.linesPerPage = 10;
+
         const dd = new Date(Date.now());
         dd.setDate(dd.getDate() - 10);
         const dds = this.getStartDateTime(dd);
@@ -88,6 +99,10 @@ export class Report {
         this.voidTransactions = null;
         this.voidTransactionsPeriod.initiated = false;
         this.voidSelectedHeader = null;
+
+        this.refundTransactions = null;
+        this.refundTransactionsPeriod.initiated = false;
+        this.refundSelectedHeader = null;
     }
     public getDateUkformat(d?: Date) {
         let month = (d.getMonth() + 1).toString();

@@ -11,6 +11,7 @@ import { DailySalesComponent } from './admin/dailySales.component';
 import { TransactionsComponent } from './admin/transactions.component';
 import { DashboardComponent } from './admin/dashboard.component';
 import { VoidTransactionsComponent } from './admin/voidTransactions.component';
+import { RefundTransactionsComponent } from './admin/refundTransactions.component';
 const routes: Routes = [
     { path: 'login', component: AuthenticationComponent },
     { path: '', redirectTo: '/admin/stores', pathMatch: 'full'},
@@ -28,6 +29,7 @@ const routes: Routes = [
             {path: 'transactions', component: TransactionsComponent},
             {path: 'voids', component: VoidTransactionsComponent},
             {path: 'dashboard', component: DashboardComponent},
-            { path: '', component: StoresComponent }]}
+            {path: 'refunds', component: RefundTransactionsComponent},
+            {path: '', component: StoresComponent }]}
 ];
 export const RoutingConfig = RouterModule.forRoot(routes);

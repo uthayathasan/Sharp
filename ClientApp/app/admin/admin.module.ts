@@ -20,11 +20,12 @@ import { TransactionsComponent } from './transactions.component';
 import {DashboardComponent} from './dashboard.component';
 import { Dashboard } from './dashboard';
 import { VoidTransactionsComponent } from './voidTransactions.component';
+import { RefundTransactionsComponent } from './refundTransactions.component';
 @NgModule({
 imports: [BrowserModule, RouterModule, FormsModule],
 declarations: [AdminComponent, StoresComponent, SidebarComponent, TopbarComponent, NodesComponent, ChildsComponent,
     DepartmentsSalesComponent, ItemsSalesComponent, DailySalesComponent, BreadcrumbComponent, UserComponent,
-     TransactionsComponent, DashboardComponent, VoidTransactionsComponent],
+     TransactionsComponent, DashboardComponent, VoidTransactionsComponent, RefundTransactionsComponent],
 providers: [Interface, TreeEvents, Report, Dashboard]
 })
 export class AdminModule {}
