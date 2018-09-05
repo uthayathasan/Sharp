@@ -17,7 +17,6 @@ const itemUrl = 'api/items';
     templateUrl: 'itemsSales.component.html'
     })
     export class ItemsSalesComponent implements OnInit {
-        private departmentsSales?: DepartmentDto[];
         BarChart: any;
         PieChart: any;
         startDate?: string;
@@ -184,7 +183,6 @@ const itemUrl = 'api/items';
                         this.gettop20().map(x => x.amount));
                     }
                     this.repo.apiBusy = false;
-                    // this.getDepartmentsSales();
                 });
             }
         }
@@ -202,40 +200,6 @@ const itemUrl = 'api/items';
                 return 0;
             }
 
-        }
-        getDepartmentsSales() {
-            const sales = this.report.itemsSales.sort((a , b) => {
-                const amtDiff =  a.departmentName.localeCompare(b.departmentName);
-                if ( amtDiff ) {return amtDiff; }
-            });
-            if (!this.departmentsSales) {
-                this.departmentsSales = [];
-            }
-            this.departmentsSales.length = 0;
-            let dept = '';
-            let amount = 0;
-            let yes = 0;
-            sales.forEach(element => {
-                if (!element.departmentName.localeCompare(dept)) {
-                       amount = amount + element.amount;
-                       yes = 1;
-                } else {
-                    if (yes === 1 ) {
-                        this.departmentsSales.push({ id : 0, department : dept, amount : amount});
-                    }
-                    dept = element.departmentName;
-                    amount = 0;
-                    yes = 0;
-                    amount = amount + element.amount;
-                }
-            });
-            this.departmentsSales.push({ id : 0, department : dept, amount : amount});
-        }
-        /*getItemSalesByDepartment(department?: string){
-            return this.itemsSales.filter()
-        }*/
-        get departmentSales(): DepartmentDto[] {
-            return this.departmentsSales;
         }
         get itemSales(): ItemDto[] {
             return this.report.itemsSales.sort((a , b) => {
@@ -268,21 +232,37 @@ const itemUrl = 'api/items';
             return this.report.itemSalesPeriod.chart;
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('itemSales', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('itemSales', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('itemSales', period).subscribe(() => {});
+                }
+            });
         }
         getPeriod(): Observable<Period> {
             return this.localStorage.getItem<Period>('itemSales');
         }
         isBarchart() {
-            if (this.report.itemSalesPeriod.chart === 'Bar Chart') {
-                return true;
+            if (this.report.itemSalesPeriod) {
+                if (this.report.itemSalesPeriod.chart === 'Bar Chart') {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
         }
         isPieChart() {
-            if (this.report.itemSalesPeriod.chart === 'Pie Chart') {
-                return true;
+            if (this.report.itemSalesPeriod) {
+                if (this.report.itemSalesPeriod.chart === 'Pie Chart') {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -349,7 +329,7 @@ const itemUrl = 'api/items';
             doc.setFontSize(12);
             doc.setFontType('normal');
             // endregion total
-            const ele = document.getElementById('chartToPdf');
+            const ele = document.getElementById('chartToPdfProductSales');
             html2canvas(ele).then(canvas => {
                 // Few necessary setting options
                 const imgWidth = 500;
@@ -357,7 +337,6 @@ const itemUrl = 'api/items';
                 const imgHeight = canvas.height * imgWidth / canvas.width;
                 const heightLeft = imgHeight;
                 const contentDataURL = canvas.toDataURL('image/png');
-
                 doc.addPage();
                 doc.addImage(contentDataURL, 'PNG', 40, 140, imgWidth, imgHeight);
                 // region Page header and footer
@@ -389,6 +368,9 @@ const itemUrl = 'api/items';
                 }
                  // endregion Page header and footer
                 doc.save('ProductSales.pdf');
-              });
+              }).catch(e => {
+                console.log('Item Sales Report Error.');
+                console.log(e);
+            });
         }
     }

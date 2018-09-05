@@ -176,7 +176,6 @@ const refundTransactionUrl = 'api/refunds';
         }
         setRefundSelectedHeaderNull() {
             this.report.refundSelectedHeader = null;
-            console.log(this.report.refundSelectedHeader);
         }
         getRefundTransactions() {
             const url = refundTransactionUrl + '/sales';

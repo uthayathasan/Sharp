@@ -177,7 +177,6 @@ const voidTransactionUrl = 'api/voids';
         }
         setVoidSelectedHeaderNull() {
             this.report.voidSelectedHeader = null;
-            console.log(this.report.voidSelectedHeader);
         }
         getVoidTransactions() {
             const url = voidTransactionUrl + '/sales';

@@ -218,21 +218,37 @@ export class DailySalesComponent implements OnInit {
         return this.report.dailySalesPeriod.chart;
     }
     savePeriod(period: Period) {
-        this.localStorage.setItem('dailySales', period).subscribe(() => {});
+        this.getPeriod().subscribe(response => {
+            if (response) {
+                if (response !== period) {
+                    this.localStorage.setItem('dailySales', period).subscribe(() => {});
+                }
+            } else {
+                this.localStorage.setItem('dailySales', period).subscribe(() => {});
+            }
+        });
     }
     getPeriod(): Observable<Period> {
         return this.localStorage.getItem<Period>('dailySales');
     }
     isBarchart() {
-        if (this.report.dailySalesPeriod.chart === 'Bar Chart') {
-            return true;
+        if (this.report.dailySalesPeriod) {
+            if (this.report.dailySalesPeriod.chart === 'Bar Chart') {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
     }
     isPieChart() {
-        if (this.report.dailySalesPeriod.chart === 'Pie Chart') {
-            return true;
+        if (this.report.dailySalesPeriod) {
+            if (this.report.dailySalesPeriod.chart === 'Pie Chart') {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -304,7 +320,7 @@ export class DailySalesComponent implements OnInit {
             doc.setFontSize(12);
             doc.setFontType('normal');
             // endregion total
-            const ele = document.getElementById('chartToPdf');
+            const ele = document.getElementById('chartToPdfDailySales');
             html2canvas(ele).then(canvas => {
                 // Few necessary setting options
                 const imgWidth = 500;
@@ -344,6 +360,9 @@ export class DailySalesComponent implements OnInit {
                 }
                  // endregion Page header and footer
                 doc.save('DailySales.pdf');
-              });
+              }).catch(e => {
+                console.log('Daily Sales Report Error.');
+                console.log(e);
+            });
     }
 }

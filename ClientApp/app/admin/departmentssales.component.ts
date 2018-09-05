@@ -216,21 +216,37 @@ const departmentUrl = 'api/departments';
             return this.report.departmentSalesPeriod.chart;
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('departmentSales', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('departmentSales', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('departmentSales', period).subscribe(() => {});
+                }
+            });
         }
         getPeriod(): Observable<Period> {
             return this.localStorage.getItem<Period>('departmentSales');
         }
         isBarchart() {
-            if (this.report.departmentSalesPeriod.chart === 'Bar Chart') {
-                return true;
+            if (this.report.departmentSalesPeriod) {
+                if (this.report.departmentSalesPeriod.chart === 'Bar Chart') {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
         }
         isPieChart() {
-            if (this.report.departmentSalesPeriod.chart === 'Pie Chart') {
-                return true;
+            if (this.report.departmentSalesPeriod) {
+                if (this.report.departmentSalesPeriod.chart === 'Pie Chart') {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
@@ -297,7 +313,7 @@ const departmentUrl = 'api/departments';
             doc.setFontSize(12);
             doc.setFontType('normal');
             // endregion total
-            const ele = document.getElementById('chartToPdf');
+            const ele = document.getElementById('chartToPdfDepartmentSales');
             html2canvas(ele).then(canvas => {
                 // Few necessary setting options
                 const imgWidth = 500;
@@ -337,7 +353,10 @@ const departmentUrl = 'api/departments';
                 }
                  // endregion Page header and footer
                 doc.save('DepartmentSales.pdf');
-              });
+              }).catch(e => {
+                console.log('Department Sales Report Error.');
+                console.log(e);
+            });
             // doc.autoPrint();
             // window.open(doc.output('bloburl'), '_blank');
         }

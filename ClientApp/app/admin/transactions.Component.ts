@@ -177,7 +177,6 @@ const transactionUrl = 'api/transactions';
         }
         setSelectedHeaderNull() {
             this.report.selectedHeader = null;
-            console.log(this.report.selectedHeader);
         }
         getTransactions() {
             const url = transactionUrl + '/sales';
