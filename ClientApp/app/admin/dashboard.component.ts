@@ -94,7 +94,15 @@ const departmentUrl = 'api/departments';
             }
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('dashboard', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('dashboard', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('dashboard', period).subscribe(() => {});
+                }
+            });
         }
         getPeriod(): Observable<Period> {
             return this.localStorage.getItem<Period>('dashboard');

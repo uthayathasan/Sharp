@@ -136,7 +136,15 @@ const refundTransactionUrl = 'api/refunds';
             return this.localStorage.getItem<Period>('refundTransactions');
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('refundTransactions', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('refundTransactions', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('refundTransactions', period).subscribe(() => {});
+                }
+            });
         }
         get refundTransHeaders(): TransactionHeaders[] {
             if (this.report.refundTransactions) {

@@ -3,6 +3,7 @@ import { Repository } from '../models/repository';
 import { Store } from '../models/store.model';
 import { Router } from '@angular/router';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { Observable } from 'rxjs/Observable';
 import { Interface } from './interface';
 import { Report } from './report';
 import { Dashboard } from './dashboard';
@@ -29,8 +30,23 @@ import { Dashboard } from './dashboard';
             this.saveStore(store);
         }
         saveStore(store: Store) {
-            this.localStorage.setItem('store', store).subscribe(() => {
-                this.router.navigateByUrl('/admin/nodes');
+            this.getStore().subscribe(response => {
+                if (response) {
+                    if (response !== store) {
+                        this.localStorage.setItem('store', store).subscribe(() => {
+                            this.router.navigateByUrl('/admin/nodes');
+                        });
+                    } else {
+                        this.router.navigateByUrl('/admin/nodes');
+                    }
+                } else {
+                    this.localStorage.setItem('store', store).subscribe(() => {
+                        this.router.navigateByUrl('/admin/nodes');
+                    });
+                }
             });
+        }
+        getStore(): Observable<any> {
+            return this.localStorage.getItem<Store>('store');
         }
     }

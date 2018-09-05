@@ -137,7 +137,15 @@ const voidTransactionUrl = 'api/voids';
             return this.localStorage.getItem<Period>('voidTransactions');
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('voidTransactions', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('voidTransactions', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('voidTransactions', period).subscribe(() => {});
+                }
+            });
         }
         get voidTransHeaders(): TransactionHeaders[] {
             if (this.report.voidTransactions) {

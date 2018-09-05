@@ -188,13 +188,29 @@ export class Interface {
         }
     }
     saveRootTag(tag: string) {
-        this.localStorage.setItem('rootTag', tag).subscribe(() => {});
+        this.getRootTag().subscribe(response => {
+            if (response) {
+                if (response !== tag) {
+                    this.localStorage.setItem('rootTag', tag).subscribe(() => {});
+                }
+            } else {
+                this.localStorage.setItem('rootTag', tag).subscribe(() => {});
+            }
+        });
     }
     getRootTag(): Observable<string> {
         return this.localStorage.getItem<string>('rootTag');
     }
     saveChildTag(tag: string) {
-        this.localStorage.setItem('childTag', tag).subscribe(() => {});
+        this.getChildTag().subscribe(response => {
+            if (response) {
+                if (response !== tag) {
+                    this.localStorage.setItem('childTag', tag).subscribe(() => {});
+                }
+            } else {
+                this.localStorage.setItem('childTag', tag).subscribe(() => {});
+            }
+        });
     }
     getChildTag(): Observable<string> {
         return this.localStorage.getItem<string>('childTag');

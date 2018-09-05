@@ -137,7 +137,15 @@ const transactionUrl = 'api/transactions';
             return this.localStorage.getItem<Period>('transactions');
         }
         savePeriod(period: Period) {
-            this.localStorage.setItem('transactions', period).subscribe(() => {});
+            this.getPeriod().subscribe(response => {
+                if (response) {
+                    if (response !== period) {
+                        this.localStorage.setItem('transactions', period).subscribe(() => {});
+                    }
+                } else {
+                    this.localStorage.setItem('transactions', period).subscribe(() => {});
+                }
+            });
         }
         get transHeaders(): TransactionHeaders[] {
             if (this.report.transactions) {

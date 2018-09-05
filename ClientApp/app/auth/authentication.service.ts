@@ -55,7 +55,15 @@ export class AuthenticationService {
         });
     }
     saveLogedIn(logedIn: LogedIn) {
-        this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
+        this. getLogedIn().subscribe(response => {
+            if (response) {
+                if (response !== logedIn) {
+                    this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
+                }
+            } else {
+                this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
+            }
+        });
     }
     getLogedIn(): Observable<any> {
         return this.localStorage.getItem<LogedIn>('sharp');
