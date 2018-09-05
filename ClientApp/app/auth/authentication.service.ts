@@ -54,6 +54,9 @@ export class AuthenticationService {
         location.reload();
         });
     }
+    /*saveLogedIn(logedIn: LogedIn) {
+        this.localStorage.setItem('sharp', logedIn).subscribe(() => {});
+    }*/
     saveLogedIn(logedIn: LogedIn) {
         this. getLogedIn().subscribe(response => {
             if (response) {

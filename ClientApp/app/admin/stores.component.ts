@@ -29,7 +29,14 @@ import { Dashboard } from './dashboard';
             this.repo.setStoreDto();
             this.saveStore(store);
         }
+        /*saveStore(store: Store) {
+            this.localStorage.setItem('store', store).subscribe(() => {
+                this.repo.selecttedStore = store;
+                this.router.navigateByUrl('/admin/nodes');
+            });
+        }*/
         saveStore(store: Store) {
+            this.repo.selecttedStore = store;
             this.getStore().subscribe(response => {
                 if (response) {
                     if (response !== store) {

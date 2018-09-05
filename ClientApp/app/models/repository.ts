@@ -20,6 +20,7 @@ const authorizationUrl = '/api/authorizations';
 
 @Injectable()
 export class Repository {
+    reLogin?: boolean;
     private filterObject = new Filter();
     apiBusy?: boolean;
     selecttedStore?: Store;
@@ -31,6 +32,7 @@ export class Repository {
     storeDto?: StoreDto;
     screenWidth?: number;
     constructor(private http: Http, private localStorage: LocalStorage, private router: Router) {
+        this.reLogin = false;
         this.apiBusy = false;
         this.authorizations = [];
         this.getAuthorizations();
@@ -49,6 +51,7 @@ export class Repository {
             }).catch((errorResponse: Response) => {
                 if (errorResponse.toString().indexOf('Unexpected token') >= 0) {
                     this.localStorage.clear().subscribe(() => {
+                        this.reLogin = true;
                         this.router.navigateByUrl('/login');
                         location.reload();
                     });
